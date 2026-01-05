@@ -5,6 +5,18 @@
   --foreground: #171717;
 }
 
+/* Light mode variables */
+html.light {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* Dark mode variables */
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -12,15 +24,419 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Light mode overrides for main page background */
+html.light body {
+  background: #f5f5f5;
+}
+
+/* Light mode component styles */
+html.light .bg-neutral-950 {
+  background-color: #f5f5f5 !important;
+}
+
+html.light .bg-neutral-900:not(button):not(button *) {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-neutral-800:not(button):not(button *) {
+  background-color: #f0f0f0 !important;
+}
+
+html.light .bg-neutral-800\/50 {
+  background-color: rgba(240, 240, 240, 0.5) !important;
+}
+
+html.light .border-neutral-800 {
+  border-color: #e5e5e5 !important;
+}
+
+html.light .border-neutral-800\/50 {
+  border-color: rgba(229, 229, 229, 0.5) !important;
+}
+
+html.light .border-neutral-700 {
+  border-color: #d4d4d4 !important;
+}
+
+html.light .text-white:not(button *) {
+  color: #171717 !important;
+}
+
+html.light .text-neutral-100 {
+  color: #262626 !important;
+}
+
+html.light .text-neutral-200 {
+  color: #404040 !important;
+}
+
+html.light .text-neutral-300 {
+  color: #525252 !important;
+}
+
+html.light .text-neutral-400 {
+  color: #737373 !important;
+}
+
+html.light .text-neutral-500 {
+  color: #a3a3a3 !important;
+}
+
+html.light .text-neutral-600 {
+  color: #525252 !important;
+}
+
+html.light .bg-neutral-950\/80 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html.light .bg-neutral-700 {
+  background-color: #e5e5e5 !important;
+}
+
+/* Light mode for grid background */
+html.light .bg-\[linear-gradient\(rgba\(255\,255\,255\,0\.02\)_1px\,transparent_1px\)\,linear-gradient\(90deg\,rgba\(255\,255\,255\,0\.02\)_1px\,transparent_1px\)\] {
+  background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px) !important;
+}
+
+/* Light mode gradient overlay */
+html.light .from-neutral-950 {
+  --tw-gradient-from: #f5f5f5 !important;
+}
+
+html.light .to-neutral-950 {
+  --tw-gradient-to: #f5f5f5 !important;
+}
+
+/* Light mode hover states */
+html.light .hover\:text-white:hover {
+  color: #171717 !important;
+}
+
+html.light .hover\:bg-neutral-800:hover {
+  background-color: #e5e5e5 !important;
+}
+
+html.light .hover\:bg-neutral-700:hover {
+  background-color: #d4d4d4 !important;
+}
+
+html.light .hover\:border-neutral-700:hover {
+  border-color: #a3a3a3 !important;
+}
+
+/* Light mode for button backgrounds */
+html.light .bg-white {
+  background-color: #171717 !important;
+  color: #ffffff !important;
+}
+
+html.light .bg-white.text-neutral-900 {
+  background-color: #171717 !important;
+  color: #ffffff !important;
+}
+
+html.light .hover\:bg-neutral-200:hover {
+  background-color: #404040 !important;
+}
+
+/* Fix for chat widget buttons in light mode */
+html.light .bg-white.text-neutral-900.hover\:bg-neutral-200:hover {
+  background-color: #404040 !important;
+}
+
+/* Chat widget specific styles for light mode */
+html.light .rounded-2xl.bg-white.text-neutral-900 {
+  background-color: #e5e5e5 !important;
+  color: #171717 !important;
+}
+
+/* Placeholder image backgrounds */
+html.light .bg-neutral-900\/50 {
+  background-color: rgba(229, 229, 229, 0.5) !important;
+}
+
+/* Profile image glow in light mode */
+html.light .from-neutral-700 {
+  --tw-gradient-from: #d4d4d4 !important;
+}
+
+html.light .to-neutral-800 {
+  --tw-gradient-to: #e5e5e5 !important;
+}
+
+/* Green accent (online indicator) should stay green */
+html.light .bg-green-500 {
+  background-color: #22c55e !important;
+}
+
+/* Keep certain accent colors */
+html.light .from-blue-500\/20,
+html.light .from-orange-500\/20,
+html.light .from-green-500\/20,
+html.light .from-pink-500\/20,
+html.light .from-cyan-500\/20,
+html.light .from-yellow-500\/20 {
+  /* Keep gradient colors for project cards */
+}
+
+/* Focus states */
+html.light .focus\:border-neutral-600:focus {
+  border-color: #a3a3a3 !important;
+}
+
+/* Disabled button states */
+html.light .disabled\:opacity-50:disabled {
+  opacity: 0.5 !important;
+}
+
+/* Divider lines */
+html.light .bg-neutral-700 {
+  background-color: #d4d4d4 !important;
+}
+
+html.light .w-px.bg-neutral-800 {
+  background-color: #d4d4d4 !important;
+}
+
+/* Stats section backgrounds */
+html.light .bg-neutral-900\/50 {
+  background-color: rgba(245, 245, 245, 0.8) !important;
+}
+
+/* Border radius and shadows in light mode */
+html.light .shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+}
+
+html.light .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+
+/* Infinite scroll animation for testimonials */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 25s linear infinite;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Marquee animation for skills */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Float animation for decorative elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Subtle pulse for interactive elements */
+@keyframes subtle-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Fade up animation */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+/* Scale in animation */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
+/* Smooth underline on hover */
+.hover-underline {
+  position: relative;
+}
+
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.hover-underline:hover::after {
+  width: 100%;
+}
+
+/* Button press effect */
+.press-effect:active {
+  transform: scale(0.98);
+}
+
+/* Card hover lift effect */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Focus ring for accessibility */
+.focus-ring:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #525252;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 4px;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}
+
+/* Selection color */
+html.dark ::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+html.light ::selection {
+  background: rgba(23, 23, 23, 0.2);
+  color: #171717;
 }

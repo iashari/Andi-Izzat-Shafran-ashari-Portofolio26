@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
+import Image from "next/image";
 
 interface Message {
   id: number;
@@ -14,7 +15,7 @@ const botResponses = [
   "Thanks for reaching out! I'm Izzat's virtual assistant. He typically responds within 24 hours.",
   "Great question! Feel free to check out the Projects section for examples of Izzat's work.",
   "Izzat specializes in UI/UX Design and Frontend Development. Would you like to know more?",
-  "You can reach Izzat directly via the Contact form or email at hello@izzat.dev",
+  "You can reach Izzat directly via the Contact form or email at andiifran25@gmail.com",
   "I appreciate your interest! Is there anything specific about Izzat's services you'd like to know?",
   "That's interesting! I'll make sure Izzat sees your message.",
   "Thanks for your message! While I'm just a bot, Izzat will get back to you soon.",
@@ -357,19 +358,34 @@ export default function ChatWidget() {
               <div key={msg.id} className="relative">
                 {/* Timeline connector */}
                 <div
-                  className="absolute left-[3px] top-3 bottom-0 w-px"
+                  className="absolute left-[11px] top-8 bottom-0 w-px"
                   style={{ backgroundColor: colors.timeline }}
                 ></div>
 
                 {/* Message */}
-                <div className="flex gap-4">
-                  {/* Timeline dot */}
+                <div className="flex gap-3">
+                  {/* Profile Photo */}
                   <div
-                    className="relative z-10 w-[7px] h-[7px] rounded-full mt-2 flex-shrink-0"
+                    className="relative z-10 w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden"
                     style={{
-                      backgroundColor: msg.sender === "user" ? colors.dot : colors.dotBot
+                      backgroundColor: msg.sender === "user" ? colors.accent : colors.bgSecondary,
+                      border: `1px solid ${colors.border}`,
                     }}
-                  ></div>
+                  >
+                    {msg.sender === "user" ? (
+                      <svg className="w-3.5 h-3.5" fill="none" stroke={colors.bg} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    ) : (
+                      <Image
+                        src="/profile2.jpeg"
+                        alt="Izzat"
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
 
                   <div className="flex-1 min-w-0">
                     {/* Sender & Time */}
@@ -408,14 +424,23 @@ export default function ChatWidget() {
             {isTyping && (
               <div className="relative">
                 <div
-                  className="absolute left-[3px] top-3 bottom-0 w-px"
+                  className="absolute left-[11px] top-8 bottom-0 w-px"
                   style={{ backgroundColor: colors.timeline }}
                 ></div>
-                <div className="flex gap-4">
+                <div className="flex gap-3">
+                  {/* Bot Profile Photo */}
                   <div
-                    className="relative z-10 w-[7px] h-[7px] rounded-full mt-2 flex-shrink-0"
-                    style={{ backgroundColor: colors.dotBot }}
-                  ></div>
+                    className="relative z-10 w-6 h-6 rounded-full flex-shrink-0 overflow-hidden"
+                    style={{ border: `1px solid ${colors.border}` }}
+                  >
+                    <Image
+                      src="/profile2.jpeg"
+                      alt="Izzat"
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span

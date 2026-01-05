@@ -163,8 +163,10 @@ export default function ChatWidget() {
   };
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isTyping, isOpen]);
 
   useEffect(() => {
     audioRef.current = new Audio("/notification.mp3");
@@ -486,10 +488,10 @@ export default function ChatWidget() {
         className="fixed bottom-6 right-6 z-50 group"
         aria-label="Toggle chat"
       >
-        <div className="relative w-12 h-12 flex items-center justify-center transition-all duration-300">
+        <div className="relative w-12 h-12 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
           {/* Background */}
           <div
-            className="absolute inset-0 border transition-all duration-300 rounded-xl"
+            className="absolute inset-0 border transition-all duration-300 rounded-xl group-hover:border-neutral-500"
             style={{
               backgroundColor: isOpen
                 ? (theme === "dark" ? "#ffffff" : "#171717")

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useSyncExternalStore } from "react";
 
 type Theme = "dark" | "light";
 
@@ -11,33 +11,37 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+// Helper to detect client-side rendering
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
+  const isClient = useIsClient();
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("theme") as Theme | null;
+      if (stored) return stored;
+      if (window.matchMedia("(prefers-color-scheme: light)").matches) return "light";
+    }
+    return "dark";
+  });
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      setTheme("light");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem("theme", theme);
-      document.documentElement.classList.remove("dark", "light");
-      document.documentElement.classList.add(theme);
-    }
-  }, [theme, mounted]);
+    localStorage.setItem("theme", theme);
+    document.documentElement.classList.remove("dark", "light");
+    document.documentElement.classList.add(theme);
+  }, [theme]);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
-  if (!mounted) {
+  if (!isClient) {
     return null;
   }
 

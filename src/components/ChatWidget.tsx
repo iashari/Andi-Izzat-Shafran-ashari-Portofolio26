@@ -1202,7 +1202,7 @@ export default function ChatWidget() {
         showToast("Removed from favorites");
       } else {
         newSet.add(imageUrl);
-        showToast("❤️ Added to favorites!");
+        showToast("Added to favorites");
       }
       return newSet;
     });
@@ -1498,7 +1498,7 @@ export default function ChatWidget() {
     };
     setImageGallery((prev) => [newImage, ...prev]);
     setLastGeneratedImage({ image, prompt });
-    showToast("🖼️ Saved to gallery!");
+    showToast("Saved to gallery");
   };
 
   const toggleGalleryFavorite = (id: number) => {
@@ -1508,7 +1508,7 @@ export default function ChatWidget() {
       )
     );
     const img = imageGallery.find((i) => i.id === id);
-    showToast(img?.isFavorite ? "Removed from favorites" : "❤️ Added to favorites!");
+    showToast(img?.isFavorite ? "Removed from favorites" : "Added to favorites");
   };
 
   const copyPromptToClipboard = (prompt: string) => {
@@ -2025,7 +2025,7 @@ export default function ChatWidget() {
                     </svg>
                   </button>
                   <h3 className="text-sm font-medium" style={{ color: colors.text }}>
-                    🖼️ Image Gallery
+                    Image Gallery
                   </h3>
                 </div>
                 {imageGallery.length > 0 && (
@@ -2058,7 +2058,6 @@ export default function ChatWidget() {
                     color: galleryFilter === "favorites" ? "#fff" : colors.textSecondary,
                   }}
                 >
-                  <span>❤️</span>
                   Favorites ({imageGallery.filter(i => i.isFavorite).length})
                 </button>
               </div>
@@ -2305,7 +2304,11 @@ export default function ChatWidget() {
                             style={{ color: colors.textMuted }}
                             title={formatFullTime(msg.timestamp)}
                           >{formatTime(msg.timestamp)}</span>
-                          {msg.favorite && <span className="text-[10px]">❤️</span>}
+                          {msg.favorite && (
+                            <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                          )}
                           {/* Action buttons */}
                           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-0.5 ml-auto">
                             {/* Reply */}
@@ -2421,7 +2424,9 @@ export default function ChatWidget() {
                             {/* Favorite indicator */}
                             {msg.isGeneratedImage && favoriteImages.has(msg.image) && (
                               <div className="absolute top-2 right-2 z-10">
-                                <span className="text-red-500 text-lg drop-shadow-lg">❤️</span>
+                                <svg className="w-5 h-5 text-red-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
                               </div>
                             )}
                             <img

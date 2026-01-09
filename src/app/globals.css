@@ -401,7 +401,7 @@ html.light .shadow-lg {
   transform: scale(1) rotate(0deg);
 }
 
-/* Dropdown button - stable hover with no glitch */
+/* Dropdown button - stable hover */
 .dropdown-btn {
   position: relative;
   transform: translateZ(0);
@@ -414,21 +414,6 @@ html.light .shadow-lg {
   position: absolute;
   inset: -4px;
   border-radius: 8px;
-}
-
-/* Dropdown dots - smooth spread on hover */
-.dropdown-dot-1, .dropdown-dot-2, .dropdown-dot-3 {
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
-  pointer-events: none;
-}
-
-.dropdown-btn:hover .dropdown-dot-1 {
-  transform: translateY(-2px);
-}
-
-.dropdown-btn:hover .dropdown-dot-3 {
-  transform: translateY(2px);
 }
 
 /* Close button - smooth rotation */

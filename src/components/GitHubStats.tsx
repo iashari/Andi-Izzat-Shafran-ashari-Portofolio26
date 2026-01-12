@@ -52,13 +52,10 @@ export default function GitHubStats() {
 
   useEffect(() => {
     const fetchGitHubData = async () => {
-      console.log("Fetching GitHub data for:", GITHUB_USERNAME);
       try {
         const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        console.log("User response status:", userRes.status);
         if (!userRes.ok) throw new Error("Failed to fetch user data");
         const userData: GitHubUser = await userRes.json();
-        console.log("User data:", userData);
 
         const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
         if (!reposRes.ok) throw new Error("Failed to fetch repos");

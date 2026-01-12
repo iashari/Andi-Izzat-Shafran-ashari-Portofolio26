@@ -52,10 +52,13 @@ export default function GitHubStats() {
 
   useEffect(() => {
     const fetchGitHubData = async () => {
+      console.log("Fetching GitHub data for:", GITHUB_USERNAME);
       try {
         const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
+        console.log("User response status:", userRes.status);
         if (!userRes.ok) throw new Error("Failed to fetch user data");
         const userData: GitHubUser = await userRes.json();
+        console.log("User data:", userData);
 
         const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
         if (!reposRes.ok) throw new Error("Failed to fetch repos");
@@ -101,8 +104,17 @@ export default function GitHubStats() {
     return (
       <section id="github" className="relative py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-8 md:px-12">
+          <div className="mb-12">
+            <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
+              Open Source
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight" style={{ color: colors.text }}>
+              GitHub<span style={{ color: colors.textLabel }}>.</span>
+            </h2>
+          </div>
           <div className="flex items-center justify-center py-12">
             <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: colors.border, borderTopColor: "transparent" }} />
+            <span className="ml-3" style={{ color: colors.textMuted }}>Loading GitHub stats...</span>
           </div>
         </div>
       </section>

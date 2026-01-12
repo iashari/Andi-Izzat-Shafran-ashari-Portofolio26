@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const skills = [
   {
@@ -51,36 +50,34 @@ const skills = [
 
 export default function Skills() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
 
   return (
-    <section id="skills" className="relative py-24 md:py-32">
+    <section id="skills" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12">
-            <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
-              My Expertise
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-              Skills<span className="text-neutral-500">.</span>
-            </h2>
-          </div>
-        </FadeIn>
+        <div
+          className={`mb-12 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
+            My Expertise
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+            Skills<span className="text-neutral-500">.</span>
+          </h2>
+        </div>
 
         {/* Skills Grid */}
         <div className="grid md:grid-cols-3 gap-6">
           {skills.map((skillGroup, index) => (
-            <motion.div
+            <div
               key={skillGroup.category}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.15,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
-              className="group relative p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 overflow-hidden"
+              className={`group relative p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 overflow-hidden ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 150}ms` : "0ms" }}
             >
               {/* Glowing orb effect */}
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-white rounded-full blur-3xl opacity-0 group-hover:opacity-[0.03] transition-opacity duration-700"></div>
@@ -119,15 +116,13 @@ export default function Skills() {
                       </div>
                       {/* Progress bar */}
                       <div className="h-1 bg-neutral-800 rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full bg-white rounded-full"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{
-                            duration: 1,
-                            delay: index * 0.15 + skillIndex * 0.1 + 0.3,
-                            ease: [0.25, 0.1, 0.25, 1],
+                        <div
+                          className={`h-full bg-white rounded-full transition-all duration-1000 ease-out ${
+                            isVisible ? "" : "!w-0"
+                          }`}
+                          style={{
+                            width: isVisible ? `${skill.level}%` : "0%",
+                            transitionDelay: isVisible ? `${index * 150 + skillIndex * 100 + 300}ms` : "0ms",
                           }}
                         />
                       </div>
@@ -138,7 +133,7 @@ export default function Skills() {
 
               {/* Bottom line */}
               <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const achievements = [
   {
@@ -65,50 +64,37 @@ const iconComponents = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
     </svg>
   ),
-  code: (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-    </svg>
-  ),
-  academic: (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-    </svg>
-  ),
 };
 
 export default function Achievement() {
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="achievement" className="relative py-24 md:py-32">
+    <section id="achievement" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12">
-            <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
-              Recognition & Awards
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-              Achievement<span className="text-neutral-500">.</span>
-            </h2>
-          </div>
-        </FadeIn>
+        <div
+          className={`mb-12 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
+            Recognition & Awards
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+            Achievement<span className="text-neutral-500">.</span>
+          </h2>
+        </div>
 
         {/* Achievement Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {achievements.map((achievement, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 40, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
-              className="group relative p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 hover:bg-neutral-900/80"
+              className={`group relative p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 hover:bg-neutral-900/80 ${
+                isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-95"
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
             >
               {/* Year Badge */}
               <div className="absolute top-4 right-4">
@@ -133,21 +119,15 @@ export default function Achievement() {
 
               {/* Hover Glow Effect */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Bottom Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: 0.5,
-            delay: 0.4,
-            ease: [0.25, 0.1, 0.25, 1],
-          }}
-          className="mt-12 flex flex-wrap justify-center gap-8 md:gap-16"
+        <div
+          className={`mt-12 flex flex-wrap justify-center gap-8 md:gap-16 transition-all duration-700 delay-500 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
         >
           <div className="text-center">
             <div className="text-3xl md:text-4xl font-bold text-white">5+</div>
@@ -167,7 +147,7 @@ export default function Achievement() {
               Competitions
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

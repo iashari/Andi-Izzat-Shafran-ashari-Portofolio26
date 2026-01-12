@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const experiences = [
   {
@@ -25,74 +24,60 @@ const experiences = [
 ];
 
 export default function Experience() {
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="experience" className="relative py-24 md:py-32">
+    <section id="experience" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12">
-            <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
-              My Journey
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-              Experience<span className="text-neutral-500">.</span>
-            </h2>
-          </div>
-        </FadeIn>
+        <div
+          className={`mb-12 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
+            My Journey
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+            Experience<span className="text-neutral-500">.</span>
+          </h2>
+        </div>
 
         {/* Timeline */}
         <div className="relative">
           {/* Timeline Line */}
-          <motion.div
-            className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-neutral-800 transform md:-translate-x-1/2 overflow-hidden"
-            initial={{ height: 0 }}
-            whileInView={{ height: "100%" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut" }}
+          <div
+            className={`absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-neutral-800 transform md:-translate-x-1/2 overflow-hidden transition-all duration-1000 ${
+              isVisible ? "opacity-100" : "opacity-0"
+            }`}
           >
-            {/* Animated glow on line */}
-            <motion.div
-              className="absolute top-0 left-0 w-full bg-gradient-to-b from-white via-white to-transparent"
-              initial={{ height: 0, opacity: 0 }}
-              whileInView={{ height: "100%", opacity: 0.2 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+            {/* Glow on line */}
+            <div
+              className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white via-white to-transparent opacity-20 transition-all duration-1000 delay-300 ${
+                isVisible ? "translate-y-0" : "-translate-y-full"
+              }`}
             />
-          </motion.div>
+          </div>
 
           {/* Timeline Items */}
           <div className="space-y-12">
             {experiences.map((exp, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.15,
-                  ease: [0.25, 0.1, 0.25, 1],
-                }}
-                className={`relative flex flex-col md:flex-row gap-8 md:gap-16 ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
-                }`}
+                className={`relative flex flex-col md:flex-row gap-8 md:gap-16 transition-all duration-700 ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                } ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                style={{ transitionDelay: isVisible ? `${index * 150}ms` : "0ms" }}
               >
                 {/* Timeline Dot */}
                 <div className="absolute left-0 md:left-1/2 w-4 h-4 transform -translate-x-1/2 md:-translate-x-1/2">
-                  <div className="w-full h-full rounded-full bg-neutral-900 border-2 border-neutral-600 group-hover:border-white transition-colors">
+                  <div className="w-full h-full rounded-full bg-neutral-900 border-2 border-neutral-600 transition-colors">
                     {/* Inner dot */}
-                    <motion.div
-                      className={`absolute inset-1 rounded-full ${
+                    <div
+                      className={`absolute inset-1 rounded-full transition-transform duration-300 ${
                         exp.type === "work" ? "bg-white" : "bg-neutral-600"
-                      }`}
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        duration: 0.3,
-                        delay: index * 0.15 + 0.2,
-                        ease: "easeOut",
-                      }}
+                      } ${isVisible ? "scale-100" : "scale-0"}`}
+                      style={{ transitionDelay: isVisible ? `${index * 150 + 200}ms` : "0ms" }}
                     />
                   </div>
                 </div>
@@ -152,7 +137,7 @@ export default function Experience() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

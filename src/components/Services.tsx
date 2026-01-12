@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const services = [
   {
@@ -48,34 +47,34 @@ const services = [
 ];
 
 export default function Services() {
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="services" className="relative py-24 md:py-32">
+    <section id="services" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12">
-            <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
-              What I do
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-              Services<span className="text-neutral-500">.</span>
-            </h2>
-          </div>
-        </FadeIn>
+        <div
+          className={`mb-12 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span className="text-neutral-500 text-sm tracking-widest uppercase mb-3 block">
+            What I do
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+            Services<span className="text-neutral-500">.</span>
+          </h2>
+        </div>
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {services.map((service, index) => (
-            <motion.div
+            <div
               key={service.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
+              className={`transition-all duration-700 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
             >
               <Link
                 href={service.href}
@@ -114,7 +113,7 @@ export default function Services() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

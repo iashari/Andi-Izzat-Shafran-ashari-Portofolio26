@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import emailjs from "@emailjs/browser";
 
 const socialLinks = [
@@ -47,6 +46,7 @@ const socialLinks = [
 
 export default function Contact() {
   const { theme } = useTheme();
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -64,10 +64,8 @@ export default function Contact() {
     text: theme === "dark" ? "#ffffff" : "#171717",
     textMuted: theme === "dark" ? "#a3a3a3" : "#525252",
     textLabel: theme === "dark" ? "#737373" : "#737373",
-    placeholder: theme === "dark" ? "#525252" : "#a3a3a3",
     buttonBg: theme === "dark" ? "#ffffff" : "#171717",
     buttonText: theme === "dark" ? "#171717" : "#ffffff",
-    buttonHover: theme === "dark" ? "#e5e5e5" : "#404040",
     success: "#22c55e",
     error: "#ef4444",
   };
@@ -78,7 +76,6 @@ export default function Contact() {
     setSubmitStatus("idle");
 
     try {
-      // Send email using EmailJS
       await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
@@ -99,31 +96,20 @@ export default function Contact() {
     }
 
     setIsSubmitting(false);
-
-    // Reset status after 5 seconds
     setTimeout(() => setSubmitStatus("idle"), 5000);
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-32">
+    <section id="contact" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Success Toast */}
         <div
           className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-xl flex items-center gap-3 transition-all duration-500 ${
-            submitStatus === "success"
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-4 pointer-events-none"
+            submitStatus === "success" ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
           }`}
-          style={{
-            backgroundColor: colors.bg,
-            border: `1px solid ${colors.success}`,
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-          }}
+          style={{ backgroundColor: colors.bg, border: `1px solid ${colors.success}`, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
         >
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: colors.success }}
-          >
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.success }}>
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
@@ -137,20 +123,11 @@ export default function Contact() {
         {/* Error Toast */}
         <div
           className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-xl flex items-center gap-3 transition-all duration-500 ${
-            submitStatus === "error"
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-4 pointer-events-none"
+            submitStatus === "error" ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
           }`}
-          style={{
-            backgroundColor: colors.bg,
-            border: `1px solid ${colors.error}`,
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-          }}
+          style={{ backgroundColor: colors.bg, border: `1px solid ${colors.error}`, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
         >
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: colors.error }}
-          >
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.error }}>
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -162,41 +139,33 @@ export default function Contact() {
         </div>
 
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12 text-center">
-            <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
-              Get In Touch
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ color: colors.text }}>
-              Contact<span style={{ color: colors.textLabel }}>.</span>
-            </h2>
-            <p style={{ color: colors.textMuted }} className="max-w-lg mx-auto">
-              Have a project in mind or just want to say hello? Feel free to reach out.
-              I&apos;m always open to discussing new opportunities.
-            </p>
-          </div>
-        </FadeIn>
+        <div
+          className={`mb-12 text-center transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
+            Get In Touch
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ color: colors.text }}>
+            Contact<span style={{ color: colors.textLabel }}>.</span>
+          </h2>
+          <p style={{ color: colors.textMuted }} className="max-w-lg mx-auto">
+            Have a project in mind or just want to say hello? Feel free to reach out.
+            I&apos;m always open to discussing new opportunities.
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-12 md:gap-16">
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              duration: 0.5,
-              delay: 0.1,
-              ease: [0.25, 0.1, 0.25, 1],
-            }}
+          <div
+            className={`transition-all duration-700 delay-100 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+            }`}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name Input */}
               <div className="group">
-                <label
-                  htmlFor="name"
-                  className="block text-sm tracking-widest uppercase mb-2 transition-colors duration-300"
-                  style={{ color: focusedField === "name" ? colors.text : colors.textLabel }}
-                >
+                <label htmlFor="name" className="block text-sm tracking-widest uppercase mb-2 transition-colors duration-300" style={{ color: focusedField === "name" ? colors.text : colors.textLabel }}>
                   Name
                 </label>
                 <input
@@ -208,22 +177,13 @@ export default function Contact() {
                   onBlur={() => setFocusedField(null)}
                   required
                   className="w-full px-4 py-3 rounded-xl transition-all duration-300 focus:outline-none"
-                  style={{
-                    backgroundColor: colors.bgInput,
-                    border: `1px solid ${focusedField === "name" ? colors.borderFocus : colors.border}`,
-                    color: colors.text,
-                  }}
+                  style={{ backgroundColor: colors.bgInput, border: `1px solid ${focusedField === "name" ? colors.borderFocus : colors.border}`, color: colors.text }}
                   placeholder="Your name"
                 />
               </div>
 
-              {/* Email Input */}
               <div className="group">
-                <label
-                  htmlFor="email"
-                  className="block text-sm tracking-widest uppercase mb-2 transition-colors duration-300"
-                  style={{ color: focusedField === "email" ? colors.text : colors.textLabel }}
-                >
+                <label htmlFor="email" className="block text-sm tracking-widest uppercase mb-2 transition-colors duration-300" style={{ color: focusedField === "email" ? colors.text : colors.textLabel }}>
                   Email
                 </label>
                 <input
@@ -235,22 +195,13 @@ export default function Contact() {
                   onBlur={() => setFocusedField(null)}
                   required
                   className="w-full px-4 py-3 rounded-xl transition-all duration-300 focus:outline-none"
-                  style={{
-                    backgroundColor: colors.bgInput,
-                    border: `1px solid ${focusedField === "email" ? colors.borderFocus : colors.border}`,
-                    color: colors.text,
-                  }}
+                  style={{ backgroundColor: colors.bgInput, border: `1px solid ${focusedField === "email" ? colors.borderFocus : colors.border}`, color: colors.text }}
                   placeholder="your@email.com"
                 />
               </div>
 
-              {/* Message Input */}
               <div className="group">
-                <label
-                  htmlFor="message"
-                  className="block text-sm tracking-widest uppercase mb-2 transition-colors duration-300"
-                  style={{ color: focusedField === "message" ? colors.text : colors.textLabel }}
-                >
+                <label htmlFor="message" className="block text-sm tracking-widest uppercase mb-2 transition-colors duration-300" style={{ color: focusedField === "message" ? colors.text : colors.textLabel }}>
                   Message
                 </label>
                 <textarea
@@ -262,166 +213,100 @@ export default function Contact() {
                   onBlur={() => setFocusedField(null)}
                   required
                   className="w-full px-4 py-3 rounded-xl transition-all duration-300 focus:outline-none resize-none"
-                  style={{
-                    backgroundColor: colors.bgInput,
-                    border: `1px solid ${focusedField === "message" ? colors.borderFocus : colors.border}`,
-                    color: colors.text,
-                  }}
+                  style={{ backgroundColor: colors.bgInput, border: `1px solid ${focusedField === "message" ? colors.borderFocus : colors.border}`, color: colors.text }}
                   placeholder="Tell me about your project..."
                 />
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isSubmitting}
                 className="group w-full py-4 px-8 font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
-                style={{
-                  backgroundColor: colors.buttonBg,
-                  color: colors.buttonText,
-                }}
+                style={{ backgroundColor: colors.buttonBg, color: colors.buttonText }}
               >
                 {isSubmitting ? (
                   <>
-                    <svg
-                      className="animate-spin w-5 h-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
+                    <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
                     <span>Sending...</span>
                   </>
                 ) : (
                   <>
                     <span>Send Message</span>
-                    <svg
-                      className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
+                    <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </>
                 )}
               </button>
             </form>
-          </motion.div>
+          </div>
 
           {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              duration: 0.5,
-              delay: 0.2,
-              ease: [0.25, 0.1, 0.25, 1],
-            }}
+          <div
+            className={`transition-all duration-700 delay-200 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+            }`}
           >
             <div className="space-y-8">
-              {/* Email */}
               <div className="group">
-                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-2">
-                  Email
-                </span>
-                <a
-                  href="mailto:andiifran25@gmail.com"
-                  className="text-xl transition-colors duration-300 hover:opacity-70"
-                  style={{ color: colors.text }}
-                >
+                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-2">Email</span>
+                <a href="mailto:andiifran25@gmail.com" className="text-xl transition-colors duration-300 hover:opacity-70" style={{ color: colors.text }}>
                   andiifran25@gmail.com
                 </a>
               </div>
 
-              {/* Location */}
               <div className="group">
-                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-2">
-                  Location
-                </span>
+                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-2">Location</span>
                 <p className="text-xl" style={{ color: colors.text }}>Indonesia</p>
               </div>
 
-              {/* Availability */}
               <div className="group">
-                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-2">
-                  Availability
-                </span>
+                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-2">Availability</span>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" style={{ willChange: "opacity" }}></span>
                   <p className="text-xl" style={{ color: colors.text }}>Open for opportunities</p>
                 </div>
               </div>
 
-              {/* Divider */}
               <div className="w-16 h-px" style={{ backgroundColor: colors.border }}></div>
 
-              {/* Social Links */}
               <div>
-                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-4">
-                  Follow Me
-                </span>
+                <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase block mb-4">Follow Me</span>
                 <div className="flex gap-4">
                   {socialLinks.map((social, index) => (
-                    <motion.a
+                    <a
                       key={social.name}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        duration: 0.3,
-                        delay: 0.3 + index * 0.1,
-                        ease: "easeOut",
-                      }}
-                      className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:scale-110 ${
+                        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+                      }`}
                       style={{
                         backgroundColor: colors.bgInput,
                         border: `1px solid ${colors.border}`,
                         color: colors.textMuted,
+                        transitionDelay: isVisible ? `${300 + index * 100}ms` : "0ms",
                       }}
                       aria-label={social.name}
                     >
                       {social.icon}
-                    </motion.a>
+                    </a>
                   ))}
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: 0.5,
-            delay: 0.3,
-            ease: [0.25, 0.1, 0.25, 1],
-          }}
-          className="mt-24 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+        <div
+          className={`mt-24 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-700 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+          }`}
           style={{ borderTop: `1px solid ${colors.border}` }}
         >
           <p className="text-sm" style={{ color: colors.textMuted }}>
@@ -430,7 +315,7 @@ export default function Contact() {
           <p className="text-sm" style={{ color: colors.textLabel }}>
             Designed & Built with Next.js
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

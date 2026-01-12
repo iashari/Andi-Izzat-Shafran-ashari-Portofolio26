@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface GitHubUser {
   login: string;
@@ -32,6 +31,7 @@ const GITHUB_USERNAME = "AndiIzzat";
 
 export default function GitHubStats() {
   const { theme } = useTheme();
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
   const [stats, setStats] = useState<GitHubStats>({
     user: null,
     totalStars: 0,
@@ -53,22 +53,18 @@ export default function GitHubStats() {
   useEffect(() => {
     const fetchGitHubData = async () => {
       try {
-        // Fetch user data
         const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
         if (!userRes.ok) throw new Error("Failed to fetch user data");
         const userData: GitHubUser = await userRes.json();
 
-        // Fetch repos
         const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
         if (!reposRes.ok) throw new Error("Failed to fetch repos");
         const reposData: GitHubRepo[] = await reposRes.json();
 
-        // Calculate total stars (excluding forks)
         const totalStars = reposData
           .filter((repo) => !repo.fork)
           .reduce((sum, repo) => sum + repo.stargazers_count, 0);
 
-        // Calculate top languages
         const languageCounts: Record<string, number> = {};
         reposData.forEach((repo) => {
           if (repo.language && !repo.fork) {
@@ -125,28 +121,28 @@ export default function GitHubStats() {
   ];
 
   return (
-    <section id="github" className="relative py-24 md:py-32">
+    <section id="github" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12">
-            <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
-              Open Source
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight" style={{ color: colors.text }}>
-              GitHub<span style={{ color: colors.textLabel }}>.</span>
-            </h2>
-          </div>
-        </FadeIn>
+        <div
+          className={`mb-12 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
+            Open Source
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight" style={{ color: colors.text }}>
+            GitHub<span style={{ color: colors.textLabel }}>.</span>
+          </h2>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Profile Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            className="p-6 rounded-2xl"
+          <div
+            className={`p-6 rounded-2xl transition-all duration-700 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
             style={{ backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}
           >
             <div className="flex items-center gap-4 mb-6">
@@ -175,14 +171,16 @@ export default function GitHubStats() {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4">
               {statItems.map((stat, index) => (
-                <motion.div
+                <div
                   key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="p-4 rounded-xl text-center"
-                  style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}` }}
+                  className={`p-4 rounded-xl text-center transition-all duration-500 ${
+                    isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
+                  }`}
+                  style={{
+                    backgroundColor: colors.bg,
+                    border: `1px solid ${colors.border}`,
+                    transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
+                  }}
                 >
                   <div className="text-2xl font-bold" style={{ color: colors.text }}>
                     {stat.value}
@@ -190,18 +188,16 @@ export default function GitHubStats() {
                   <div className="text-xs uppercase tracking-wider" style={{ color: colors.textMuted }}>
                     {stat.label}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Languages Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="p-6 rounded-2xl"
+          <div
+            className={`p-6 rounded-2xl transition-all duration-700 delay-100 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
             style={{ backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}
           >
             <h3 className="text-lg font-semibold mb-6" style={{ color: colors.text }}>
@@ -214,12 +210,12 @@ export default function GitHubStats() {
                 const percentage = (lang.count / maxCount) * 100;
 
                 return (
-                  <motion.div
+                  <div
                     key={lang.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className={`transition-all duration-500 ${
+                      isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-5"
+                    }`}
+                    style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
                   >
                     <div className="flex justify-between mb-1">
                       <span className="text-sm font-medium" style={{ color: colors.text }}>
@@ -230,21 +226,21 @@ export default function GitHubStats() {
                       </span>
                     </div>
                     <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: colors.border }}>
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{ backgroundColor: colors.accent }}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${percentage}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                      <div
+                        className="h-full rounded-full transition-all duration-700 ease-out"
+                        style={{
+                          backgroundColor: colors.accent,
+                          width: isVisible ? `${percentage}%` : "0%",
+                          transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
+                        }}
                       />
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
 
-            {/* GitHub Contribution Graph (using GitHub readme stats) */}
+            {/* GitHub Link */}
             <div className="mt-6 pt-6" style={{ borderTop: `1px solid ${colors.border}` }}>
               <a
                 href={`https://github.com/${GITHUB_USERNAME}`}
@@ -259,7 +255,7 @@ export default function GitHubStats() {
                 View Full Profile
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

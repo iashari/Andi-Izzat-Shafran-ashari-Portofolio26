@@ -88,7 +88,8 @@ export default function BlogPost({ post }: BlogPostProps) {
     ),
     hr: () => <hr className="my-8" style={{ borderColor: colors.border }} />,
     img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-      <img className="rounded-xl my-4 max-w-full" {...props} />
+      // eslint-disable-next-line @next/next/no-img-element
+      <img className="rounded-xl my-4 max-w-full" alt={props.alt || "Blog image"} {...props} />
     ),
   };
 

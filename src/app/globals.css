@@ -558,6 +558,16 @@ html.light ::selection {
   animation: bounce-in 0.6s ease-out forwards;
 }
 
+/* Override Tailwind animations to use GPU acceleration */
+.animate-bounce {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animate-pulse {
+  will-change: opacity;
+}
+
 /* Rainbow gradient animation for special buttons */
 @keyframes rainbow-shift {
   0% { background-position: 0% 50%; }

@@ -485,6 +485,7 @@ export default function Navbar() {
                 key={link.name}
                 href={getHref(link.href)}
                 onClick={(e) => isHomePage && handleNavClick(e, link.href)}
+                aria-label={link.name}
                 className="relative p-2 rounded-xl transition-all duration-300 ease-out group hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
                 style={{
                   color: isActive(link)

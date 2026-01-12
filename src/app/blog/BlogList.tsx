@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
 import BackToTop from "@/components/BackToTop";
@@ -13,6 +13,11 @@ interface BlogListProps {
 
 export default function BlogList({ posts }: BlogListProps) {
   const { theme } = useTheme();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const colors = {
     bg: theme === "dark" ? "#0a0a0a" : "#faf8f5",
@@ -49,11 +54,10 @@ export default function BlogList({ posts }: BlogListProps) {
       <main className="relative z-10 pt-32 pb-24 px-6">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-12"
+          <div
+            className={`mb-12 transition-all duration-500 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            }`}
           >
             <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
               My Thoughts
@@ -64,26 +68,26 @@ export default function BlogList({ posts }: BlogListProps) {
             <p className="mt-4 text-lg" style={{ color: colors.textMuted }}>
               Sharing my journey in design, development, and creativity.
             </p>
-          </motion.div>
+          </div>
 
           {/* Posts Grid */}
           {posts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-center py-16"
+            <div
+              className={`text-center py-16 transition-all duration-500 delay-200 ${
+                isVisible ? "opacity-100" : "opacity-0"
+              }`}
             >
               <p style={{ color: colors.textMuted }}>No posts yet. Check back soon!</p>
-            </motion.div>
+            </div>
           ) : (
             <div className="grid gap-6">
               {posts.map((post, index) => (
-                <motion.article
+                <article
                   key={post.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={`transition-all duration-500 ${
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <Link href={`/blog/${post.slug}`}>
                     <div
@@ -151,17 +155,17 @@ export default function BlogList({ posts }: BlogListProps) {
                       </div>
                     </div>
                   </Link>
-                </motion.article>
+                </article>
               ))}
             </div>
           )}
 
           {/* Back to Home */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-12 text-center"
+          <div
+            className={`mt-12 text-center transition-all duration-500 ${
+              isVisible ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ transitionDelay: "500ms" }}
           >
             <Link
               href="/"
@@ -173,7 +177,7 @@ export default function BlogList({ posts }: BlogListProps) {
               </svg>
               Back to Home
             </Link>
-          </motion.div>
+          </div>
         </div>
       </main>
 

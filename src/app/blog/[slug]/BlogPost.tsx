@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { useTheme } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
@@ -14,6 +14,11 @@ interface BlogPostProps {
 
 export default function BlogPost({ post }: BlogPostProps) {
   const { theme } = useTheme();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const colors = {
     bg: theme === "dark" ? "#0a0a0a" : "#faf8f5",
@@ -35,7 +40,6 @@ export default function BlogPost({ post }: BlogPostProps) {
     });
   };
 
-  // Custom MDX components
   const components = {
     h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h1 className="text-3xl font-bold mt-8 mb-4" style={{ color: colors.text }} {...props} />
@@ -104,10 +108,10 @@ export default function BlogPost({ post }: BlogPostProps) {
       <main className="relative z-10 pt-32 pb-24 px-6">
         <article className="max-w-3xl mx-auto">
           {/* Back link */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
+          <div
+            className={`transition-all duration-300 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-5"
+            }`}
           >
             <Link
               href="/blog"
@@ -119,14 +123,14 @@ export default function BlogPost({ post }: BlogPostProps) {
               </svg>
               Back to Blog
             </Link>
-          </motion.div>
+          </div>
 
           {/* Header */}
-          <motion.header
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-8"
+          <header
+            className={`mb-8 transition-all duration-500 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            }`}
+            style={{ transitionDelay: "100ms" }}
           >
             {/* Date */}
             <span className="text-sm" style={{ color: colors.textLabel }}>
@@ -156,34 +160,32 @@ export default function BlogPost({ post }: BlogPostProps) {
                 ))}
               </div>
             )}
-          </motion.header>
+          </header>
 
           {/* Divider */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="h-px mb-8 origin-left"
-            style={{ backgroundColor: colors.border }}
+          <div
+            className={`h-px mb-8 transition-all duration-500 origin-left ${
+              isVisible ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+            }`}
+            style={{ backgroundColor: colors.border, transitionDelay: "200ms" }}
           />
 
           {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="prose prose-lg max-w-none"
+          <div
+            className={`prose prose-lg max-w-none transition-all duration-500 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            }`}
+            style={{ transitionDelay: "300ms" }}
           >
             <MDXRemote source={post.content} components={components} />
-          </motion.div>
+          </div>
 
           {/* Footer */}
-          <motion.footer
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-12 pt-8"
-            style={{ borderTop: `1px solid ${colors.border}` }}
+          <footer
+            className={`mt-12 pt-8 transition-all duration-500 ${
+              isVisible ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ borderTop: `1px solid ${colors.border}`, transitionDelay: "500ms" }}
           >
             <Link
               href="/blog"
@@ -199,7 +201,7 @@ export default function BlogPost({ post }: BlogPostProps) {
               </svg>
               More Posts
             </Link>
-          </motion.footer>
+          </footer>
         </article>
       </main>
 

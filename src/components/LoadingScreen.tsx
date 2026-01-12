@@ -1,17 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [fadeOut, setFadeOut] = useState(false);
   const { theme } = useTheme();
 
   useEffect(() => {
-    // Animate progress very fast to minimize blocking
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -22,9 +21,9 @@ export default function LoadingScreen() {
       });
     }, 50);
 
-    // Hide loader very quickly to improve FCP/LCP - only 800ms
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setFadeOut(true);
+      setTimeout(() => setIsLoading(false), 500);
     }, 800);
 
     return () => {
@@ -41,22 +40,15 @@ export default function LoadingScreen() {
   const glowColor = theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)";
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
+    <div
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden transition-opacity duration-500 ${
+        fadeOut ? "opacity-0" : "opacity-100"
+      }`}
       style={{ backgroundColor: bgColor }}
-      initial={{ opacity: 1 }}
-      animate={{ opacity: progress >= 100 ? 0 : 1 }}
-      transition={{ duration: 0.5 }}
-      onAnimationComplete={() => {
-        if (progress >= 100) setIsLoading(false);
-      }}
     >
       {/* Background radial glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+      <div
+        className="absolute inset-0 pointer-events-none animate-fade-in"
         style={{
           background: `radial-gradient(circle at center, ${glowColor} 0%, transparent 70%)`,
         }}
@@ -64,68 +56,31 @@ export default function LoadingScreen() {
 
       {/* Animated rings */}
       {[...Array(3)].map((_, i) => (
-        <motion.div
+        <div
           key={i}
-          className="absolute rounded-full border"
+          className="absolute rounded-full border animate-ring"
           style={{
             borderColor: theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
-          }}
-          initial={{ width: 100, height: 100, opacity: 0 }}
-          animate={{
-            width: [100, 400 + i * 100],
-            height: [100, 400 + i * 100],
-            opacity: [0.5, 0],
-          }}
-          transition={{
-            duration: 2,
-            delay: i * 0.4,
-            repeat: Infinity,
-            ease: "easeOut",
+            animationDelay: `${i * 0.4}s`,
           }}
         />
       ))}
 
-      {/* Logo container with glow */}
-      <motion.div
-        className="relative z-10"
-        initial={{ opacity: 0, scale: 0.5, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          ease: [0.25, 0.1, 0.25, 1],
-          delay: 0.2
-        }}
-      >
+      {/* Logo container */}
+      <div className="relative z-10 animate-logo-appear">
         {/* Glow behind logo */}
-        <motion.div
-          className="absolute inset-0 blur-3xl"
+        <div
+          className="absolute inset-0 blur-3xl animate-pulse-slow"
           style={{
             background: theme === "dark"
               ? "radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)"
               : "radial-gradient(circle, rgba(0,0,0,0.15) 0%, transparent 70%)",
             transform: "scale(2)",
           }}
-          animate={{
-            opacity: [0.5, 0.8, 0.5],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
         />
 
         {/* Main logo */}
-        <motion.div
-          animate={{
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
+        <div className="animate-scale-pulse">
           <Image
             src={theme === "dark" ? "/Logos/jat logo white.png" : "/Logos/jat logo black.png"}
             alt="Jat Logo"
@@ -139,40 +94,112 @@ export default function LoadingScreen() {
             }}
             priority
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Progress bar */}
-      <motion.div
-        initial={{ opacity: 0, width: 0 }}
-        animate={{ opacity: 1, width: 200 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="relative z-10 mt-12"
-      >
+      <div className="relative z-10 mt-12 w-[200px] animate-progress-appear">
         <div
           className="h-[2px] rounded-full overflow-hidden"
           style={{ backgroundColor: theme === "dark" ? "#262626" : "#e5e5e5" }}
         >
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: textColor }}
-            initial={{ width: "0%" }}
-            animate={{ width: `${Math.min(progress, 100)}%` }}
-            transition={{ duration: 0.2 }}
+          <div
+            className="h-full rounded-full transition-all duration-200"
+            style={{
+              backgroundColor: textColor,
+              width: `${Math.min(progress, 100)}%`
+            }}
           />
         </div>
 
         {/* Percentage text */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="mt-4 text-center text-sm font-medium tracking-widest"
+        <p
+          className="mt-4 text-center text-sm font-medium tracking-widest animate-fade-in-delayed"
           style={{ color: mutedColor }}
         >
           {Math.min(Math.round(progress), 100)}%
-        </motion.p>
-      </motion.div>
-    </motion.div>
+        </p>
+      </div>
+
+      <style jsx>{`
+        @keyframes ring {
+          0% {
+            width: 100px;
+            height: 100px;
+            opacity: 0.5;
+          }
+          100% {
+            width: 500px;
+            height: 500px;
+            opacity: 0;
+          }
+        }
+        @keyframes logo-appear {
+          0% {
+            opacity: 0;
+            transform: scale(0.5) translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+        @keyframes scale-pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+        }
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 0.5;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
+        @keyframes progress-appear {
+          0% {
+            opacity: 0;
+            width: 0;
+          }
+          100% {
+            opacity: 1;
+            width: 200px;
+          }
+        }
+        @keyframes fade-in {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+        .animate-ring {
+          animation: ring 2s ease-out infinite;
+        }
+        .animate-logo-appear {
+          animation: logo-appear 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s both;
+        }
+        .animate-scale-pulse {
+          animation: scale-pulse 2s ease-in-out infinite;
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 2s ease-in-out infinite;
+        }
+        .animate-progress-appear {
+          animation: progress-appear 0.5s ease-out 0.5s both;
+        }
+        .animate-fade-in {
+          animation: fade-in 1s ease-out both;
+        }
+        .animate-fade-in-delayed {
+          animation: fade-in 0.5s ease-out 0.7s both;
+        }
+      `}</style>
+    </div>
   );
 }

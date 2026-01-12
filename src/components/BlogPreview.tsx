@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
-import { FadeIn } from "@/components/PageTransition";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface PostMeta {
   slug: string;
@@ -19,6 +18,7 @@ interface BlogPreviewProps {
 
 export default function BlogPreview({ posts }: BlogPreviewProps) {
   const { theme } = useTheme();
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
 
   const colors = {
     bg: theme === "dark" ? "#0a0a0a" : "#fafafa",
@@ -38,35 +38,36 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
     });
   };
 
-  // Show only latest 3 posts
   const recentPosts = posts.slice(0, 3);
 
   return (
-    <section id="blog" className="relative py-24 md:py-32">
+    <section id="blog" className="relative py-24 md:py-32" ref={ref}>
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
-        <FadeIn delay={0}>
-          <div className="mb-12 flex justify-between items-end">
-            <div>
-              <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
-                Latest Posts
-              </span>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight" style={{ color: colors.text }}>
-                Blog<span style={{ color: colors.textLabel }}>.</span>
-              </h2>
-            </div>
-            <Link
-              href="/blog"
-              className="hidden md:flex items-center gap-2 text-sm transition-opacity hover:opacity-70"
-              style={{ color: colors.textMuted }}
-            >
-              View all posts
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+        <div
+          className={`mb-12 flex justify-between items-end transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <div>
+            <span style={{ color: colors.textLabel }} className="text-sm tracking-widest uppercase mb-3 block">
+              Latest Posts
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight" style={{ color: colors.text }}>
+              Blog<span style={{ color: colors.textLabel }}>.</span>
+            </h2>
           </div>
-        </FadeIn>
+          <Link
+            href="/blog"
+            className="hidden md:flex items-center gap-2 text-sm transition-opacity hover:opacity-70"
+            style={{ color: colors.textMuted }}
+          >
+            View all posts
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
 
         {/* Posts Grid */}
         {recentPosts.length === 0 ? (
@@ -76,12 +77,12 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recentPosts.map((post, index) => (
-              <motion.article
+              <article
                 key={post.slug}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                className={`transition-all duration-700 ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+                style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
               >
                 <Link href={`/blog/${post.slug}`}>
                   <div
@@ -129,7 +130,7 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
                     )}
                   </div>
                 </Link>
-              </motion.article>
+              </article>
             ))}
           </div>
         )}

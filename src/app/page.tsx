@@ -174,9 +174,9 @@ export default function Home() {
 
               {/* Minimal footer info */}
               <FadeIn delay={0.9}>
-                <div className="mt-8 flex items-center gap-6 text-sm text-neutral-600 justify-center md:justify-start">
+                <div className="mt-8 flex items-center gap-6 text-sm text-neutral-400 justify-center md:justify-start">
                   <span>Intern | Ashari Tech</span>
-                  <span className="w-1 h-1 rounded-full bg-neutral-700"></span>
+                  <span className="w-1 h-1 rounded-full bg-neutral-600"></span>
                   <span>Based in Indonesia</span>
                 </div>
               </FadeIn>

@@ -37,7 +37,7 @@ const Projects = dynamic(() => import("@/components/Projects"));
 const Experience = dynamic(() => import("@/components/Experience"));
 const Achievement = dynamic(() => import("@/components/Achievement"));
 const Contact = dynamic(() => import("@/components/Contact"));
-const GitHubStats = dynamic(() => import("@/components/GitHubStats"));
+const GitHubStats = dynamic(() => import("@/components/GitHubStats"), { ssr: false });
 const BlogSection = dynamic(() => import("@/components/BlogSection"));
 const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: false });
 

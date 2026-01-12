@@ -1,6 +1,6 @@
 # Andi Izzat Portfolio
 
-[![Deploy](https://github.com/AndiIzzat/Andi-Izzat-Shafran-ashari-Portofolio26/actions/workflows/deploy.yml/badge.svg)](https://github.com/AndiIzzat/Andi-Izzat-Shafran-ashari-Portofolio26/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/iashari/Andi-Izzat-Shafran-ashari-Portofolio26/actions/workflows/deploy.yml/badge.svg)](https://github.com/iashari/Andi-Izzat-Shafran-ashari-Portofolio26/actions/workflows/deploy.yml)
 
 A modern, performant portfolio website built with Next.js 16, TypeScript, and Tailwind CSS.
 

@@ -11,21 +11,21 @@ export default function LoadingScreen() {
   const { theme } = useTheme();
 
   useEffect(() => {
-    // Animate progress
+    // Animate progress faster
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + Math.random() * 12;
+        return prev + Math.random() * 20;
       });
-    }, 100);
+    }, 80);
 
-    // Hide loader after animation
+    // Hide loader faster to improve FCP/LCP
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1200);
 
     return () => {
       clearTimeout(timer);

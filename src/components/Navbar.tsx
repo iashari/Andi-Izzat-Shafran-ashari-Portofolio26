@@ -191,6 +191,7 @@ function Logo3DViewer({
       {/* Close button */}
       <button
         onClick={onClose}
+        aria-label="Close 3D logo viewer"
         className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
         style={{
           backgroundColor: theme === "dark" ? "#262626" : "#e5e5e5",
@@ -217,8 +218,8 @@ function Logo3DViewer({
             transition: isDragging ? "none" : "transform 0.1s ease-out"
           }}
         >
-          {/* Multiple layers for 3D thickness effect */}
-          {[...Array(50)].map((_, i) => (
+          {/* Multiple layers for 3D thickness effect - reduced for performance */}
+          {[...Array(20)].map((_, i) => (
             <Image
               key={i}
               src={theme === "dark" ? "/Logos/jat logo white.png" : "/Logos/jat logo black.png"}
@@ -230,11 +231,11 @@ function Logo3DViewer({
                 position: i === 0 ? "relative" : "absolute",
                 top: 0,
                 left: 0,
-                transform: `translateZ(${i * -0.5}px)`,
+                transform: `translateZ(${i * -1}px)`,
                 opacity: 1,
                 filter: i === 0
                   ? "brightness(1) drop-shadow(0 0 10px rgba(255,255,255,0.3))"
-                  : `brightness(${1 - (i * 0.004)})`
+                  : `brightness(${1 - (i * 0.01)})`
               }}
               draggable={false}
               priority={i === 0}
@@ -458,6 +459,7 @@ export default function Navbar() {
             onClick={() => setIsLogoViewerOpen(true)}
             className="relative transition-all duration-300 hover:scale-105 active:scale-95"
             title="Click to view 3D logo"
+            aria-label="View 3D logo - Izzat Portfolio"
           >
             <Image
               src={theme === "dark" ? "/Logos/jat logo white.png" : "/Logos/jat logo black.png"}

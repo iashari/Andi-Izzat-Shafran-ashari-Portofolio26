@@ -3341,6 +3341,7 @@ export default function ChatWidget() {
             setUnreadCount(0);
           }
         }}
+        aria-label={isOpen ? "Close chat" : "Open AI chat assistant"}
         className={`chat-fab icon-btn fixed z-50 rounded-full flex items-center justify-center cursor-pointer ${
           isMobile ? "bottom-4 right-4 w-12 h-12" : "bottom-6 right-6 w-14 h-14"
         } ${isOpen && isMobile ? "opacity-0 pointer-events-none" : "opacity-100"}`}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 
 const projects = [
@@ -121,6 +122,28 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projects.find((p) => p.slug === slug);
+
+  if (!project) {
+    return {
+      title: "Project Not Found",
+    };
+  }
+
+  return {
+    title: `${project.title} - ${project.category}`,
+    description: project.fullDescription,
+    openGraph: {
+      title: `${project.title} | Izzat Portfolio`,
+      description: project.fullDescription,
+      type: "article",
+      images: [project.image],
+    },
+  };
+}
+
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
@@ -176,9 +199,11 @@ export default async function ProjectPage({ params }: PageProps) {
           <div className="relative aspect-video rounded-2xl mb-12 overflow-hidden border border-neutral-800">
             <Image
               src={project.image}
-              alt={project.title}
+              alt={`${project.title} - ${project.category} project screenshot`}
               fill
+              sizes="(max-width: 768px) 100vw, 896px"
               className="object-cover"
+              priority
             />
           </div>
 

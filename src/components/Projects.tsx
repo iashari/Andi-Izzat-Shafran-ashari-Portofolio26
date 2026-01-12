@@ -94,6 +94,8 @@ export default function Projects() {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
+              aria-label={`Filter projects by ${category}`}
+              aria-pressed={activeCategory === category}
               className="px-5 py-2 rounded-full text-sm tracking-wide transition-all duration-300 border"
               style={{
                 backgroundColor: activeCategory === category
@@ -136,9 +138,11 @@ export default function Projects() {
                 {/* Project Image */}
                 <Image
                   src={project.image}
-                  alt={project.title}
+                  alt={`${project.title} - ${project.category} project by Izzat`}
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
                 />
 
                 {/* Overlay */}

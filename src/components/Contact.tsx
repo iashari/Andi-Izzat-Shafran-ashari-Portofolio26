@@ -104,7 +104,7 @@ export default function Contact() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Success Toast */}
         <div
-          className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-xl flex items-center gap-3 transition-all duration-500 ${
+          className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-xl flex items-center gap-3 transition-[transform,opacity] duration-500 ${
             submitStatus === "success" ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
           }`}
           style={{ backgroundColor: colors.bg, border: `1px solid ${colors.success}`, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
@@ -122,7 +122,7 @@ export default function Contact() {
 
         {/* Error Toast */}
         <div
-          className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-xl flex items-center gap-3 transition-all duration-500 ${
+          className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-xl flex items-center gap-3 transition-[transform,opacity] duration-500 ${
             submitStatus === "error" ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
           }`}
           style={{ backgroundColor: colors.bg, border: `1px solid ${colors.error}`, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
@@ -140,7 +140,7 @@ export default function Contact() {
 
         {/* Section Header */}
         <div
-          className={`mb-12 text-center transition-all duration-700 ${
+          className={`mb-12 text-center transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -159,7 +159,7 @@ export default function Contact() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-16">
           {/* Contact Form */}
           <div
-            className={`transition-all duration-700 delay-100 ${
+            className={`transition-[transform,opacity] duration-700 delay-100 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
@@ -176,7 +176,7 @@ export default function Contact() {
                   onFocus={() => setFocusedField("name")}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="w-full px-4 py-3 rounded-xl transition-all duration-300 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl transition-[transform,border-color] duration-300 focus:outline-none"
                   style={{ backgroundColor: colors.bgInput, border: `1px solid ${focusedField === "name" ? colors.borderFocus : colors.border}`, color: colors.text }}
                   placeholder="Your name"
                 />
@@ -194,7 +194,7 @@ export default function Contact() {
                   onFocus={() => setFocusedField("email")}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="w-full px-4 py-3 rounded-xl transition-all duration-300 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl transition-[transform,border-color] duration-300 focus:outline-none"
                   style={{ backgroundColor: colors.bgInput, border: `1px solid ${focusedField === "email" ? colors.borderFocus : colors.border}`, color: colors.text }}
                   placeholder="your@email.com"
                 />
@@ -212,7 +212,7 @@ export default function Contact() {
                   onFocus={() => setFocusedField("message")}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="w-full px-4 py-3 rounded-xl transition-all duration-300 focus:outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl transition-[transform,border-color] duration-300 focus:outline-none resize-none"
                   style={{ backgroundColor: colors.bgInput, border: `1px solid ${focusedField === "message" ? colors.borderFocus : colors.border}`, color: colors.text }}
                   placeholder="Tell me about your project..."
                 />
@@ -221,7 +221,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group w-full py-4 px-8 font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                className="group w-full py-4 px-8 font-semibold rounded-xl transition-[transform,border-color] duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
                 style={{ backgroundColor: colors.buttonBg, color: colors.buttonText }}
               >
                 {isSubmitting ? (
@@ -246,7 +246,7 @@ export default function Contact() {
 
           {/* Contact Info */}
           <div
-            className={`transition-all duration-700 delay-200 ${
+            className={`transition-[transform,opacity] duration-700 delay-200 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
             }`}
           >
@@ -282,7 +282,7 @@ export default function Contact() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:scale-110 ${
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:scale-110 ${
                         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
                       }`}
                       style={{
@@ -304,7 +304,7 @@ export default function Contact() {
 
         {/* Footer */}
         <div
-          className={`mt-24 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-700 delay-300 ${
+          className={`mt-24 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 transition-[transform,opacity] duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
           style={{ borderTop: `1px solid ${colors.border}` }}

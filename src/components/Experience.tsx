@@ -31,7 +31,7 @@ export default function Experience() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 transition-all duration-700 ${
+          className={`mb-12 transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -47,13 +47,13 @@ export default function Experience() {
         <div className="relative">
           {/* Timeline Line */}
           <div
-            className={`absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-neutral-800 transform md:-translate-x-1/2 overflow-hidden transition-all duration-1000 ${
+            className={`absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-neutral-800 transform md:-translate-x-1/2 overflow-hidden transition-opacity duration-1000 ${
               isVisible ? "opacity-100" : "opacity-0"
             }`}
           >
             {/* Glow on line */}
             <div
-              className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white via-white to-transparent opacity-20 transition-all duration-1000 delay-300 ${
+              className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white via-white to-transparent opacity-20 transition-opacity duration-1000 delay-300 ${
                 isVisible ? "translate-y-0" : "-translate-y-full"
               }`}
             />
@@ -64,7 +64,7 @@ export default function Experience() {
             {experiences.map((exp, index) => (
               <div
                 key={index}
-                className={`relative flex flex-col md:flex-row gap-8 md:gap-16 transition-all duration-700 ${
+                className={`relative flex flex-col md:flex-row gap-8 md:gap-16 transition-[transform,opacity] duration-700 ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 } ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
                 style={{ transitionDelay: isVisible ? `${index * 150}ms` : "0ms" }}
@@ -129,7 +129,7 @@ export default function Experience() {
                       {exp.skills.map((skill) => (
                         <span
                           key={skill}
-                          className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-500 text-sm hover:border-neutral-700 hover:text-neutral-300 transition-all duration-300"
+                          className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-500 text-sm hover:border-neutral-700 hover:text-neutral-300 transition-colors duration-300"
                         >
                           {skill}
                         </span>

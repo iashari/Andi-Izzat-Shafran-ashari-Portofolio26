@@ -57,7 +57,7 @@ export default function Skills() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 transition-all duration-700 ${
+          className={`mb-12 transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -74,7 +74,7 @@ export default function Skills() {
           {skills.map((skillGroup, index) => (
             <div
               key={skillGroup.category}
-              className={`group relative p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 overflow-hidden ${
+              className={`group relative p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-[transform,opacity] duration-500 overflow-hidden ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: isVisible ? `${index * 150}ms` : "0ms" }}
@@ -84,7 +84,7 @@ export default function Skills() {
 
               <div className="relative z-10">
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-600 group-hover:bg-neutral-700 transition-all duration-300 mb-6">
+                <div className="w-14 h-14 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-600 group-hover:bg-neutral-700 transition-colors duration-300 mb-6">
                   {skillGroup.icon}
                 </div>
 
@@ -107,21 +107,19 @@ export default function Skills() {
                           {skill.name}
                         </span>
                         <span
-                          className={`text-xs font-mono transition-all duration-300 ${
+                          className={`text-xs font-mono transition-colors duration-300 ${
                             hoveredSkill === skill.name ? "text-white" : "text-neutral-600"
                           }`}
                         >
                           {skill.level}%
                         </span>
                       </div>
-                      {/* Progress bar */}
+                      {/* Progress bar - using transform for GPU acceleration */}
                       <div className="h-1 bg-neutral-800 rounded-full overflow-hidden">
                         <div
-                          className={`h-full bg-white rounded-full transition-all duration-1000 ease-out ${
-                            isVisible ? "" : "!w-0"
-                          }`}
+                          className="h-full w-full bg-white rounded-full transition-transform duration-1000 ease-out origin-left"
                           style={{
-                            width: isVisible ? `${skill.level}%` : "0%",
+                            transform: isVisible ? `scaleX(${skill.level / 100})` : "scaleX(0)",
                             transitionDelay: isVisible ? `${index * 150 + skillIndex * 100 + 300}ms` : "0ms",
                           }}
                         />

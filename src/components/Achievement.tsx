@@ -74,7 +74,7 @@ export default function Achievement() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 transition-all duration-700 ${
+          className={`mb-12 transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -91,7 +91,7 @@ export default function Achievement() {
           {achievements.map((achievement, index) => (
             <div
               key={index}
-              className={`group relative p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 hover:bg-neutral-900/80 ${
+              className={`group relative p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-[transform,opacity] duration-500 hover:bg-neutral-900/80 ${
                 isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-95"
               }`}
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
@@ -104,7 +104,7 @@ export default function Achievement() {
               </div>
 
               {/* Icon */}
-              <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center mb-4 text-neutral-400 group-hover:text-white group-hover:border-neutral-600 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center mb-4 text-neutral-400 group-hover:text-white group-hover:border-neutral-600 transition-colors duration-300">
                 {iconComponents[achievement.icon as keyof typeof iconComponents]}
               </div>
 
@@ -125,7 +125,7 @@ export default function Achievement() {
 
         {/* Bottom Stats */}
         <div
-          className={`mt-12 flex flex-wrap justify-center gap-8 md:gap-16 transition-all duration-700 delay-500 ${
+          className={`mt-12 flex flex-wrap justify-center gap-8 md:gap-16 transition-[transform,opacity] duration-700 delay-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >

@@ -10,7 +10,7 @@ export default function About() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 transition-all duration-700 ${
+          className={`mb-12 transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -25,7 +25,7 @@ export default function About() {
         {/* Bio */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div
-            className={`transition-all duration-700 ${
+            className={`transition-[transform,opacity] duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
@@ -39,7 +39,7 @@ export default function About() {
             </p>
           </div>
           <div
-            className={`transition-all duration-700 ${
+            className={`transition-[transform,opacity] duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}
@@ -55,7 +55,7 @@ export default function About() {
 
         {/* Stats Bar */}
         <div
-          className={`grid grid-cols-3 gap-6 py-8 px-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl transition-all duration-700 ${
+          className={`grid grid-cols-3 gap-6 py-8 px-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
           }`}
           style={{ transitionDelay: isVisible ? "300ms" : "0ms" }}

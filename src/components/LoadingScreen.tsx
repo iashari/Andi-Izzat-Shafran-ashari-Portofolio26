@@ -124,13 +124,11 @@ export default function LoadingScreen() {
       <style jsx>{`
         @keyframes ring {
           0% {
-            width: 100px;
-            height: 100px;
+            transform: scale(1);
             opacity: 0.5;
           }
           100% {
-            width: 500px;
-            height: 500px;
+            transform: scale(5);
             opacity: 0;
           }
         }
@@ -163,11 +161,11 @@ export default function LoadingScreen() {
         @keyframes progress-appear {
           0% {
             opacity: 0;
-            width: 0;
+            transform: scaleX(0);
           }
           100% {
             opacity: 1;
-            width: 200px;
+            transform: scaleX(1);
           }
         }
         @keyframes fade-in {
@@ -179,25 +177,35 @@ export default function LoadingScreen() {
           }
         }
         .animate-ring {
+          width: 100px;
+          height: 100px;
           animation: ring 2s ease-out infinite;
+          will-change: transform, opacity;
         }
         .animate-logo-appear {
           animation: logo-appear 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s both;
+          will-change: transform, opacity;
         }
         .animate-scale-pulse {
           animation: scale-pulse 2s ease-in-out infinite;
+          will-change: transform;
         }
         .animate-pulse-slow {
           animation: pulse-slow 2s ease-in-out infinite;
+          will-change: opacity;
         }
         .animate-progress-appear {
           animation: progress-appear 0.5s ease-out 0.5s both;
+          transform-origin: left;
+          will-change: transform, opacity;
         }
         .animate-fade-in {
           animation: fade-in 1s ease-out both;
+          will-change: opacity;
         }
         .animate-fade-in-delayed {
           animation: fade-in 0.5s ease-out 0.7s both;
+          will-change: opacity;
         }
       `}</style>
     </div>

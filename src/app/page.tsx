@@ -30,15 +30,15 @@ function ScaleIn({ children, delay = 0 }: { children: React.ReactNode; delay?: n
 }
 
 // Dynamic imports for below-the-fold components to reduce initial bundle
-const About = dynamic(() => import("@/components/About"));
-const Skills = dynamic(() => import("@/components/Skills"));
-const Services = dynamic(() => import("@/components/Services"));
-const Projects = dynamic(() => import("@/components/Projects"));
-const Experience = dynamic(() => import("@/components/Experience"));
-const Achievement = dynamic(() => import("@/components/Achievement"));
-const Contact = dynamic(() => import("@/components/Contact"));
-const GitHubStats = dynamic(() => import("@/components/GitHubStats"));
-const BlogSection = dynamic(() => import("@/components/BlogSection"));
+const About = dynamic(() => import("@/components/About"), { ssr: false });
+const Skills = dynamic(() => import("@/components/Skills"), { ssr: false });
+const Services = dynamic(() => import("@/components/Services"), { ssr: false });
+const Projects = dynamic(() => import("@/components/Projects"), { ssr: false });
+const Experience = dynamic(() => import("@/components/Experience"), { ssr: false });
+const Achievement = dynamic(() => import("@/components/Achievement"), { ssr: false });
+const Contact = dynamic(() => import("@/components/Contact"), { ssr: false });
+const GitHubStats = dynamic(() => import("@/components/GitHubStats"), { ssr: false });
+const BlogSection = dynamic(() => import("@/components/BlogSection"), { ssr: false });
 const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: false });
 
 // Dynamic imports for widgets - load after initial render

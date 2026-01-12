@@ -125,7 +125,7 @@ export default function GitHubStats() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 transition-all duration-700 ${
+          className={`mb-12 transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -140,7 +140,7 @@ export default function GitHubStats() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Profile Card */}
           <div
-            className={`p-6 rounded-2xl transition-all duration-700 ${
+            className={`p-6 rounded-2xl transition-[transform,opacity] duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}
@@ -173,7 +173,7 @@ export default function GitHubStats() {
               {statItems.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className={`p-4 rounded-xl text-center transition-all duration-500 ${
+                  className={`p-4 rounded-xl text-center transition-[transform,opacity] duration-500 ${
                     isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
                   }`}
                   style={{
@@ -195,7 +195,7 @@ export default function GitHubStats() {
 
           {/* Languages Card */}
           <div
-            className={`p-6 rounded-2xl transition-all duration-700 delay-100 ${
+            className={`p-6 rounded-2xl transition-[transform,opacity] duration-700 delay-100 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}
@@ -212,7 +212,7 @@ export default function GitHubStats() {
                 return (
                   <div
                     key={lang.name}
-                    className={`transition-all duration-500 ${
+                    className={`transition-[transform,opacity] duration-500 ${
                       isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-5"
                     }`}
                     style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
@@ -227,10 +227,10 @@ export default function GitHubStats() {
                     </div>
                     <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: colors.border }}>
                       <div
-                        className="h-full rounded-full transition-all duration-700 ease-out"
+                        className="h-full w-full rounded-full transition-transform duration-700 ease-out origin-left"
                         style={{
                           backgroundColor: colors.accent,
-                          width: isVisible ? `${percentage}%` : "0%",
+                          transform: isVisible ? `scaleX(${percentage / 100})` : "scaleX(0)",
                           transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
                         }}
                       />
@@ -246,7 +246,7 @@ export default function GitHubStats() {
                 href={`https://github.com/${GITHUB_USERNAME}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]"
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-transform duration-300 hover:scale-[1.02]"
                 style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}`, color: colors.text }}
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

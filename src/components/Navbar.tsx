@@ -16,7 +16,7 @@ function ThemeToggle({ theme, toggleTheme, size = "default" }: { theme: string; 
   return (
     <button
       onClick={toggleTheme}
-      className="relative rounded-full transition-all duration-300 ease-out overflow-hidden"
+      className="relative rounded-full transition-[transform,opacity] duration-300 ease-out overflow-hidden"
       style={{
         width: dimensions.width,
         height: dimensions.height,
@@ -26,7 +26,7 @@ function ThemeToggle({ theme, toggleTheme, size = "default" }: { theme: string; 
     >
       {/* Sliding knob with icon */}
       <div
-        className="absolute rounded-full shadow-md transition-all duration-300 ease-out flex items-center justify-center"
+        className="absolute rounded-full shadow-md transition-[transform,opacity] duration-300 ease-out flex items-center justify-center"
         style={{
           width: knobDimensions.width,
           height: knobDimensions.height,
@@ -38,7 +38,7 @@ function ThemeToggle({ theme, toggleTheme, size = "default" }: { theme: string; 
       >
         {/* Sun icon */}
         <svg
-          className="absolute transition-all duration-300"
+          className="absolute transition-[transform,opacity] duration-300"
           style={{
             width: 10,
             height: 10,
@@ -56,7 +56,7 @@ function ThemeToggle({ theme, toggleTheme, size = "default" }: { theme: string; 
 
         {/* Moon icon */}
         <svg
-          className="absolute transition-all duration-300"
+          className="absolute transition-[transform,opacity] duration-300"
           style={{
             width: 10,
             height: 10,
@@ -192,7 +192,7 @@ function Logo3DViewer({
       <button
         onClick={onClose}
         aria-label="Close 3D logo viewer"
-        className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+        className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-[transform,opacity] duration-300 hover:scale-110 active:scale-95"
         style={{
           backgroundColor: theme === "dark" ? "#262626" : "#e5e5e5",
           color: textColor
@@ -457,7 +457,7 @@ export default function Navbar() {
           {/* Logo */}
           <button
             onClick={() => setIsLogoViewerOpen(true)}
-            className="relative transition-all duration-300 hover:scale-105 active:scale-95"
+            className="relative transition-[transform,opacity] duration-300 hover:scale-105 active:scale-95"
             title="Click to view 3D logo"
             aria-label="View 3D logo - Izzat Portfolio"
           >
@@ -486,7 +486,7 @@ export default function Navbar() {
                 href={getHref(link.href)}
                 onClick={(e) => isHomePage && handleNavClick(e, link.href)}
                 aria-label={link.name}
-                className="relative p-2 rounded-xl transition-all duration-300 ease-out group hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
+                className="relative p-2 rounded-xl transition-[transform,opacity] duration-300 ease-out group hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
                 style={{
                   color: isActive(link)
                     ? (theme === "dark" ? "#ffffff" : "#2d2a26")
@@ -497,7 +497,7 @@ export default function Navbar() {
                 }}
                 title={link.name}
               >
-                <span className="transition-all duration-300 ease-out group-hover:scale-110 block">
+                <span className="transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 block">
                   {link.icon}
                 </span>
                 {/* Tooltip */}
@@ -522,14 +522,14 @@ export default function Navbar() {
           </div>
 
           {/* Theme Toggle - Separate on the right */}
-          <div className="hidden md:block transition-all duration-300 ease-out hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0">
+          <div className="hidden md:block transition-[transform,opacity] duration-300 ease-out hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center group rounded-xl transition-all duration-300 ease-out hover:scale-105 active:scale-95"
+            className="md:hidden relative w-10 h-10 flex items-center justify-center group rounded-xl transition-[transform,opacity] duration-300 ease-out hover:scale-105 active:scale-95"
             style={{
               backgroundColor: isMenuOpen
                 ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(45, 42, 38, 0.05)")
@@ -539,13 +539,13 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-1.5 transition-transform duration-300 group-hover:scale-110">
               <span
-                className={`block w-5 h-px transition-all duration-300 ease-out ${
+                className={`block w-5 h-px transition-[transform,opacity] duration-300 ease-out ${
                   isMenuOpen ? "rotate-45 translate-y-[3.5px]" : ""
                 }`}
                 style={{ backgroundColor: theme === "dark" ? "#a3a3a3" : "#525252" }}
               ></span>
               <span
-                className={`block w-5 h-px transition-all duration-300 ease-out ${
+                className={`block w-5 h-px transition-[transform,opacity] duration-300 ease-out ${
                   isMenuOpen ? "-rotate-45 -translate-y-[3.5px]" : ""
                 }`}
                 style={{ backgroundColor: theme === "dark" ? "#a3a3a3" : "#525252" }}
@@ -556,7 +556,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
+          className={`md:hidden overflow-hidden transition-[transform,opacity] duration-300 ${
             isMenuOpen ? "max-h-96 pb-6" : "max-h-0"
           }`}
         >
@@ -572,7 +572,7 @@ export default function Navbar() {
                   setIsMenuOpen(false);
                   if (isHomePage) handleNavClick(e, link.href);
                 }}
-                className="text-sm tracking-wide transition-all duration-300 ease-out flex items-center gap-3 py-2 px-3 rounded-xl hover:translate-x-1 active:scale-[0.98] group"
+                className="text-sm tracking-wide transition-[transform,opacity] duration-300 ease-out flex items-center gap-3 py-2 px-3 rounded-xl hover:translate-x-1 active:scale-[0.98] group"
                 style={{
                   color: isActive(link)
                     ? (theme === "dark" ? "#ffffff" : "#2d2a26")

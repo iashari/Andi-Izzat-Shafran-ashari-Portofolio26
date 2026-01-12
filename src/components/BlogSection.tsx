@@ -57,7 +57,7 @@ export default function BlogSection() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 flex justify-between items-end transition-all duration-700 ${
+          className={`mb-12 flex justify-between items-end transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -86,17 +86,19 @@ export default function BlogSection() {
           {POSTS.map((post, index) => (
             <article
               key={post.slug}
-              className={`transition-all duration-700 ${
+              className={`transition-[transform,opacity] duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
             >
               <Link href={`/blog/${post.slug}`}>
                 <div
-                  className="group h-full p-6 rounded-2xl transition-all duration-300 hover:scale-[1.02]"
+                  className="group h-full p-6 rounded-2xl transition-transform duration-300 hover:scale-[1.02]"
                   style={{
                     backgroundColor: colors.bgCard,
                     border: `1px solid ${colors.border}`,
+                    willChange: "transform",
+                    backfaceVisibility: "hidden",
                   }}
                 >
                   {/* Date */}
@@ -149,14 +151,14 @@ export default function BlogSection() {
 
         {/* View All Link */}
         <div
-          className={`mt-8 text-center transition-all duration-700 ${
+          className={`mt-8 text-center transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
           style={{ transitionDelay: isVisible ? "300ms" : "0ms" }}
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-transform duration-300 hover:scale-105"
             style={{
               backgroundColor: colors.bgCard,
               color: colors.text,

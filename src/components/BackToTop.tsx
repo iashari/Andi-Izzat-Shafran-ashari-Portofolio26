@@ -36,7 +36,7 @@ export default function BackToTop() {
 
   return (
     <div
-      className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 ease-out ${
+      className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-40 transition-[transform,opacity] duration-300 ease-out ${
         isVisible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-4 pointer-events-none"
@@ -44,7 +44,7 @@ export default function BackToTop() {
     >
       <button
         onClick={scrollToTop}
-        className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+        className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium shadow-lg transition-transform duration-200 hover:scale-105 active:scale-95"
         style={{
           backgroundColor: colors.bg,
           color: colors.text,

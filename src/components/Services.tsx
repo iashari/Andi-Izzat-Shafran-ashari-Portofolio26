@@ -54,7 +54,7 @@ export default function Services() {
       <div className="max-w-5xl mx-auto px-8 md:px-12">
         {/* Section Header */}
         <div
-          className={`mb-12 transition-all duration-700 ${
+          className={`mb-12 transition-[transform,opacity] duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -71,21 +71,21 @@ export default function Services() {
           {services.map((service, index) => (
             <div
               key={service.title}
-              className={`transition-all duration-700 ${
+              className={`transition-[transform,opacity] duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
             >
               <Link
                 href={service.href}
-                className="group relative p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-all duration-500 hover:-translate-y-1 block h-full"
+                className="group relative p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition-[transform,opacity] duration-500 hover:-translate-y-1 block h-full"
               >
                 {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neutral-800/0 to-neutral-700/0 group-hover:from-neutral-800/50 group-hover:to-neutral-700/30 transition-all duration-500"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neutral-800/0 to-neutral-700/0 group-hover:from-neutral-800/50 group-hover:to-neutral-700/30 transition-[transform,opacity] duration-500"></div>
 
                 <div className="relative z-10">
                   {/* Icon */}
-                  <div className="w-14 h-14 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-600 group-hover:bg-neutral-700 transition-all duration-300 mb-6">
+                  <div className="w-14 h-14 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-600 group-hover:bg-neutral-700 transition-colors duration-300 mb-6">
                     {service.icon}
                   </div>
 
@@ -100,7 +100,7 @@ export default function Services() {
                   </p>
 
                   {/* Arrow indicator */}
-                  <div className="mt-6 flex items-center gap-2 text-neutral-500 group-hover:text-white transition-all duration-300">
+                  <div className="mt-6 flex items-center gap-2 text-neutral-500 group-hover:text-white transition-colors duration-300">
                     <span className="text-sm">View projects</span>
                     <svg
                       className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"

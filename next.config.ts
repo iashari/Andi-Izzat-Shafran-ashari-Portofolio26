@@ -20,8 +20,15 @@ const nextConfig: NextConfig = {
   },
   compress: true,
   reactStrictMode: true,
+  poweredByHeader: false,
   experimental: {
     optimizeCss: true,
+  },
+  // Optimize imports for tree-shaking
+  modularizeImports: {
+    "react-syntax-highlighter": {
+      transform: "react-syntax-highlighter/dist/esm/{{member}}",
+    },
   },
   async headers() {
     return [
@@ -51,6 +58,26 @@ const nextConfig: NextConfig = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+      // Cache static assets for 1 year
+      {
+        source: "/(.*)\\.(ico|png|jpg|jpeg|gif|webp|avif|svg|woff|woff2|ttf|otf|mp3)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // Cache Next.js static assets
+      {
+        source: "/_next/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

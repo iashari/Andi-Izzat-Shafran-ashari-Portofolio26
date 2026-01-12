@@ -84,7 +84,7 @@ export default function Home() {
           {/* Horizontal layout */}
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
             {/* Left side - Photo */}
-            <ScaleIn delay={0.2}>
+            <ScaleIn delay={0}>
               <div className="flex-shrink-0">
                 <div className="relative group">
                   {/* Outer glow */}
@@ -100,6 +100,8 @@ export default function Home() {
                       className="object-cover"
                       priority
                       fetchPriority="high"
+                      loading="eager"
+                      quality={75}
                     />
                   </div>
 
@@ -173,7 +175,7 @@ export default function Home() {
                 <div className="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
                   <a
                     href="#contact"
-                    className="px-6 py-3 rounded-full text-sm tracking-wide transition-all duration-300 hover:scale-105"
+                    className="px-6 py-3 rounded-full text-sm tracking-wide transition-transform duration-300 hover:scale-105"
                     style={{
                       backgroundColor: theme === "dark" ? "#ffffff" : "#2d2a26",
                       color: theme === "dark" ? "#171717" : "#faf8f5",
@@ -183,7 +185,7 @@ export default function Home() {
                   </a>
                   <a
                     href="#projects"
-                    className="px-6 py-3 rounded-full text-sm tracking-wide border transition-all duration-300 hover:scale-105"
+                    className="px-6 py-3 rounded-full text-sm tracking-wide border transition-transform duration-300 hover:scale-105"
                     style={{
                       borderColor: theme === "dark" ? "#404040" : "#ddd8ce",
                       color: theme === "dark" ? "#ffffff" : "#2d2a26",

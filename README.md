@@ -10,7 +10,7 @@
 
 A modern, high-performance portfolio website showcasing my work as a **Graphic Designer** and **Front-End Developer**. Built with cutting-edge technologies and optimized for perfect PageSpeed scores.
 
-[**View Live Demo**](https://andi-izzat-shafran-ashari-portofolio26.vercel.app/) | [**Report Bug**](https://github.com/iashari/Andi-Izzat-Shafran-ashari-Portofolio26/issues) | [**Request Feature**](https://github.com/iashari/Andi-Izzat-Shafran-ashari-Portofolio26/issues)
+[**View Live Demo**](https://izzatshafran.vercel.app/) | [**Report Bug**](https://github.com/iashari/Andi-Izzat-Shafran-ashari-Portofolio26/issues) | [**Request Feature**](https://github.com/iashari/Andi-Izzat-Shafran-ashari-Portofolio26/issues)
 
 </div>
 

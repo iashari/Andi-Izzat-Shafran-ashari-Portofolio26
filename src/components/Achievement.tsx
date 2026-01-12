@@ -5,36 +5,52 @@ import { FadeIn } from "@/components/PageTransition";
 
 const achievements = [
   {
-    year: "2024",
-    title: "Best UI/UX Design Award",
-    organization: "Design Competition",
+    year: "2025",
+    title: "1st Place LKS Provincial Level",
+    organization: "Student Competency Competition - Graphic Design Technology",
     description:
-      "Recognized for creating an innovative and user-friendly mobile application interface that improved user engagement by 40%.",
+      "Achieved 1st place in the Student Competency Competition (LKS) for Graphic Design Technology at the South Sulawesi Provincial level.",
+    icon: "trophy",
+  },
+  {
+    year: "2025",
+    title: "Medalion of Excellence LKS National",
+    organization: "Student Competency Competition - Graphic Design Technology",
+    description:
+      "Awarded Medalion of Excellence at the National LKS in Graphic Design Technology, representing South Sulawesi.",
     icon: "trophy",
   },
   {
     year: "2024",
-    title: "Web Development Certification",
-    organization: "Meta Professional Certificate",
+    title: "2nd Place at ENIAC 2024",
+    organization: "Graphic Design - SMAN 11 Makassar",
     description:
-      "Completed comprehensive front-end development program covering React, responsive design, and modern web technologies.",
+      "Achieved 2nd place in the Graphic Design competition at ENIAC 2024 event hosted by SMAN 11 Makassar.",
+    icon: "trophy",
+  },
+  {
+    year: "2024",
+    title: "3rd Place at Electro Invention Race 2024",
+    organization: "Graphic Design Technology - PNUP",
+    description:
+      "Achieved 3rd place in Electro Invention Race 2024 for Graphic Design Technology at the Provincial level, hosted by Politeknik Negeri Ujung Pandang.",
+    icon: "trophy",
+  },
+  {
+    year: "2023",
+    title: "2nd Place at ENIAC 2023",
+    organization: "Graphic Design - SMAN 11 Makassar",
+    description:
+      "Achieved 2nd place in the Graphic Design competition at ENIAC 2023 event hosted by SMAN 11 Makassar.",
+    icon: "trophy",
+  },
+  {
+    year: "2025",
+    title: "LKS Finalist - School Level",
+    organization: "SMK Telkom Makassar",
+    description:
+      "Selected as a finalist for LKS Graphic Design Technology at SMK Telkom Makassar, recognized as one of the top graphic design students in the school.",
     icon: "certificate",
-  },
-  {
-    year: "2023",
-    title: "Hackathon Finalist",
-    organization: "TechFest Indonesia",
-    description:
-      "Reached finals in national hackathon with a team project focused on sustainable technology solutions.",
-    icon: "code",
-  },
-  {
-    year: "2023",
-    title: "Dean's List",
-    organization: "Academic Excellence",
-    description:
-      "Achieved academic excellence with outstanding GPA, demonstrating strong commitment to learning and growth.",
-    icon: "academic",
   },
 ];
 
@@ -134,19 +150,19 @@ export default function Achievement() {
           className="mt-12 flex flex-wrap justify-center gap-8 md:gap-16"
         >
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white">4+</div>
+            <div className="text-3xl md:text-4xl font-bold text-white">5+</div>
             <div className="text-neutral-500 text-sm tracking-widest uppercase mt-1">
               Awards
             </div>
           </div>
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white">3+</div>
+            <div className="text-3xl md:text-4xl font-bold text-white">1</div>
             <div className="text-neutral-500 text-sm tracking-widest uppercase mt-1">
-              Certifications
+              National
             </div>
           </div>
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white">2+</div>
+            <div className="text-3xl md:text-4xl font-bold text-white">5+</div>
             <div className="text-neutral-500 text-sm tracking-widest uppercase mt-1">
               Competitions
             </div>

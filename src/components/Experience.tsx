@@ -5,40 +5,22 @@ import { FadeIn } from "@/components/PageTransition";
 
 const experiences = [
   {
-    year: "2024",
-    title: "Frontend Developer Intern",
+    year: "2025 - 2026",
+    title: "Full Stack Developer Intern",
     company: "Ashari Tech",
     description:
-      "Working on modern web applications using React and Next.js. Collaborating with design team to implement pixel-perfect UIs.",
-    skills: ["React", "Next.js", "TypeScript"],
+      "Developing modern web applications using React, Next.js, and backend technologies. Building full-stack solutions from database design to frontend implementation. Collaborating with the team to deliver scalable and user-friendly applications.",
+    skills: ["React", "Next.js", "TypeScript", "Node.js", "Database"],
     type: "work",
   },
   {
-    year: "2023",
-    title: "Freelance Graphic Designer",
-    company: "Self-employed",
+    year: "2024 - Present",
+    title: "Social Media Graphic Designer",
+    company: "Telkom Schools Indonesia",
     description:
-      "Created brand identities, logos, and marketing materials for various clients. Developed strong client communication skills.",
-    skills: ["Figma", "Illustrator", "Photoshop"],
+      "Spearhead the daily visual identity for the official Telkom Schools Instagram, serving as the central information hub for 50+ schools across Indonesia (from kindergarten to university level). Design and publish high-quality social media feeds. Create engaging visual content to communicate school programs, digital innovations, and student achievements to a nationwide audience.",
+    skills: ["Content Strategy", "Brand Design", "Social Media", "Visual Design"],
     type: "work",
-  },
-  {
-    year: "2022",
-    title: "UI/UX Design Course",
-    company: "Online Certification",
-    description:
-      "Completed comprehensive UI/UX design program covering user research, wireframing, prototyping, and design systems.",
-    skills: ["User Research", "Prototyping", "Design Systems"],
-    type: "education",
-  },
-  {
-    year: "2021",
-    title: "Started Learning Web Development",
-    company: "Self-taught",
-    description:
-      "Began journey into web development, learning HTML, CSS, JavaScript, and modern frameworks through online resources.",
-    skills: ["HTML", "CSS", "JavaScript"],
-    type: "education",
   },
 ];
 

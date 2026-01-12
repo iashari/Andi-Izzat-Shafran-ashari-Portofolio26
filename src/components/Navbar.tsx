@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 
 // Theme Toggle Component - Rounded Monochromatic Design
@@ -73,9 +74,190 @@ function ThemeToggle({ theme, toggleTheme, size = "default" }: { theme: string; 
   );
 }
 
+// 3D Logo Viewer Modal
+function Logo3DViewer({
+  isOpen,
+  onClose,
+  theme
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  theme: string;
+}) {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
+
+  // Auto rotation - always on
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const interval = setInterval(() => {
+      setRotation(prev => ({
+        x: prev.x,
+        y: prev.y + 0.5
+      }));
+    }, 16);
+
+    return () => clearInterval(interval);
+  }, [isOpen]);
+
+  // Reset on open
+  useEffect(() => {
+    if (isOpen) {
+      setRotation({ x: 0, y: 0 });
+    }
+  }, [isOpen]);
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setLastPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+
+    const deltaX = e.clientX - lastPosition.x;
+    const deltaY = e.clientY - lastPosition.y;
+
+    setRotation(prev => ({
+      x: prev.x + deltaY * 0.5,
+      y: prev.y + deltaX * 0.5
+    }));
+
+    setLastPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    const touch = e.touches[0];
+    setLastPosition({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - lastPosition.x;
+    const deltaY = touch.clientY - lastPosition.y;
+
+    setRotation(prev => ({
+      x: prev.x + deltaY * 0.5,
+      y: prev.y + deltaX * 0.5
+    }));
+
+    setLastPosition({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  if (!isOpen) return null;
+
+  const bgColor = theme === "dark" ? "rgba(10, 10, 10, 0.95)" : "rgba(250, 248, 245, 0.95)";
+  const textColor = theme === "dark" ? "#ffffff" : "#171717";
+  const mutedColor = theme === "dark" ? "#525252" : "#a3a3a3";
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ backgroundColor: bgColor }}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+        style={{
+          backgroundColor: theme === "dark" ? "#262626" : "#e5e5e5",
+          color: textColor
+        }}
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* 3D Logo Container */}
+      <div
+        className="cursor-grab active:cursor-grabbing select-none"
+        style={{ perspective: "1000px" }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+      >
+        <div
+          className="relative"
+          style={{
+            transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+            transformStyle: "preserve-3d",
+            transition: isDragging ? "none" : "transform 0.1s ease-out"
+          }}
+        >
+          {/* Multiple layers for 3D thickness effect */}
+          {[...Array(50)].map((_, i) => (
+            <Image
+              key={i}
+              src={theme === "dark" ? "/Logos/jat logo white.png" : "/Logos/jat logo black.png"}
+              alt="Jat Logo 3D"
+              width={300}
+              height={150}
+              className="pointer-events-none"
+              style={{
+                position: i === 0 ? "relative" : "absolute",
+                top: 0,
+                left: 0,
+                transform: `translateZ(${i * -0.5}px)`,
+                opacity: 1,
+                filter: i === 0
+                  ? "brightness(1) drop-shadow(0 0 10px rgba(255,255,255,0.3))"
+                  : `brightness(${1 - (i * 0.004)})`
+              }}
+              draggable={false}
+              priority={i === 0}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Instructions */}
+      <p
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-sm"
+        style={{ color: mutedColor }}
+      >
+        Drag to rotate • Click anywhere to interact
+      </p>
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isLogoViewerOpen, setIsLogoViewerOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const { theme, toggleTheme } = useTheme();
@@ -271,14 +453,21 @@ export default function Navbar() {
 
       <div className="relative max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo / Name */}
-          <Link
-            href="/"
-            className="font-bold text-lg tracking-tight transition-all duration-300 hover:scale-105 active:scale-95"
-            style={{ color: theme === "dark" ? "#ffffff" : "#171717" }}
+          {/* Logo */}
+          <button
+            onClick={() => setIsLogoViewerOpen(true)}
+            className="relative transition-all duration-300 hover:scale-105 active:scale-95"
+            title="Click to view 3D logo"
           >
-            Izzat<span style={{ color: theme === "dark" ? "#737373" : "#a3a3a3" }}>.</span>
-          </Link>
+            <Image
+              src={theme === "dark" ? "/Logos/jat logo white.png" : "/Logos/jat logo black.png"}
+              alt="Jat Logo"
+              width={50}
+              height={25}
+              className="object-contain"
+              priority
+            />
+          </button>
 
           {/* Desktop Navigation - Centered with Icons */}
           <div
@@ -412,6 +601,13 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* 3D Logo Viewer Modal */}
+      <Logo3DViewer
+        isOpen={isLogoViewerOpen}
+        onClose={() => setIsLogoViewerOpen(false)}
+        theme={theme}
+      />
     </nav>
   );
 }

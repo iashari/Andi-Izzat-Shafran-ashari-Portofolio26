@@ -1,123 +1,115 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
-import { type ReactNode } from "react";
 
 const projects = [
   {
     id: 1,
-    slug: "web-app-project",
-    title: "E-Commerce Dashboard",
-    category: "Web Development",
-    description: "Modern dashboard interface with analytics and data visualization.",
-    fullDescription: "A comprehensive e-commerce dashboard featuring real-time analytics, inventory management, and sales tracking. Built with modern technologies for optimal performance and user experience.",
-    color: "from-white/5 to-neutral-400/15",
-    tags: ["React", "Next.js", "Tailwind", "TypeScript"],
+    slug: "seeds-movie-website",
+    title: "SeEDS Movie Website",
+    category: "Web Design",
+    description: "Mood-based movie streaming website.",
+    fullDescription: "A unique movie streaming website that recommends films based on your current mood. Features include mood selection (Happy, Feeling Blue, Hot Head, Yuck, On Edge), personalized watchlists, celebrity profiles, and curated recommendations.",
+    tags: ["Web Design", "Streaming", "UI", "Entertainment"],
     year: "2024",
-    client: "Demo Project",
-    duration: "4 Weeks",
-    role: "Full-Stack Developer",
+    client: "School Project",
+    duration: "3 Weeks",
+    role: "UI/UX Designer",
     features: [
-      "Real-time analytics and data visualization",
-      "Inventory management system",
-      "Sales tracking and reporting",
-      "Responsive dashboard design",
-      "Dark/Light mode support",
+      "Mood-based movie recommendations",
+      "User profiles and watchlists",
+      "Celebrity and actor profiles",
+      "Top picks and fan favorites",
+      "Social features integration",
     ],
-    icon: "dashboard",
+    image: "/project footage/Car rental project school 2/Seeds movie website.png",
   },
   {
     id: 2,
-    slug: "brand-identity",
-    title: "Brand Identity Design",
-    category: "Graphic Design",
-    description: "Complete brand identity package with logo and guidelines.",
-    fullDescription: "A complete brand identity project including logo design, color palette selection, typography choices, and comprehensive brand guidelines document for consistent brand application.",
-    color: "from-neutral-400/10 to-neutral-500/20",
-    tags: ["Branding", "Logo Design", "Identity", "Guidelines"],
+    slug: "kanesia-ecommerce",
+    title: "Kanesia E-Commerce",
+    category: "UI/UX Design",
+    description: "Mobile e-commerce app for handmade crafts.",
+    fullDescription: "A mobile e-commerce application for handmade fabric crafts (kain perca) from Makassar, Indonesia. Features product categories, personalized recommendations, and a seamless shopping experience for unique handmade items.",
+    tags: ["Figma", "E-Commerce", "Mobile", "UI/UX"],
     year: "2024",
-    client: "Demo Project",
-    duration: "3 Weeks",
-    role: "Brand Designer",
+    client: "School Project",
+    duration: "4 Weeks",
+    role: "UI/UX Designer",
     features: [
-      "Logo design with variations",
-      "Color palette and typography",
-      "Brand guidelines document",
-      "Business card and stationery",
-      "Social media templates",
+      "Product categories and search",
+      "Personalized recommendations",
+      "Shopping cart and checkout",
+      "User reviews and ratings",
+      "Location-based services",
     ],
-    icon: "brand",
+    image: "/project footage/Car rental project school 2/Kanesia e-com.png",
   },
   {
     id: 3,
-    slug: "mobile-app-design",
-    title: "Mobile App UI/UX",
-    category: "UI/UX Design",
-    description: "User-centered mobile app design with intuitive navigation.",
-    fullDescription: "A mobile application design focused on user experience, featuring intuitive navigation, clean interface design, and seamless user flows. Designed with accessibility and usability in mind.",
-    color: "from-neutral-500/10 to-neutral-600/20",
-    tags: ["Figma", "Prototype", "Mobile", "UI/UX"],
+    slug: "lumiere-photography",
+    title: "Lumière Photography",
+    category: "Web Design",
+    description: "Professional photography services website.",
+    fullDescription: "An elegant website for professional photography services featuring a stunning gallery showcase, client testimonials, and service offerings. Built with a sophisticated dark theme that highlights the visual work.",
+    tags: ["Web Design", "Photography", "UI", "Portfolio"],
     year: "2024",
-    client: "Demo Project",
-    duration: "5 Weeks",
-    role: "UI/UX Designer",
+    client: "School Project",
+    duration: "2 Weeks",
+    role: "Web Designer",
     features: [
-      "User research and personas",
-      "Wireframes and prototypes",
-      "High-fidelity UI design",
-      "Interactive prototype",
-      "Design system components",
+      "Gallery showcase with lightbox",
+      "Client testimonials section",
+      "Service packages display",
+      "Contact and booking form",
+      "Elegant dark theme design",
     ],
-    icon: "mobile",
+    image: "/project footage/Car rental project school 2/lumiere photography.png",
   },
   {
     id: 4,
-    slug: "portfolio-website",
-    title: "Portfolio Website",
-    category: "Web Development",
-    description: "This portfolio website with modern animations and design.",
-    fullDescription: "This portfolio website you are currently viewing, showcasing modern web development practices with smooth animations, responsive design, and interactive elements like the resizable chat widget.",
-    color: "from-neutral-600/10 to-neutral-700/20",
-    tags: ["Next.js", "TypeScript", "Tailwind", "React"],
-    year: "2024",
-    client: "Personal Project",
+    slug: "sporty-car-rentals",
+    title: "Sporty Car Rentals",
+    category: "Web Design",
+    description: "Sports car rental website.",
+    fullDescription: "A clean and modern website for sports car rentals featuring luxury vehicles. Designed with a fresh teal and white color scheme that conveys elegance and professionalism.",
+    tags: ["Web Design", "Automotive", "UI", "Rental"],
+    year: "2023",
+    client: "School Project",
     duration: "2 Weeks",
-    role: "Developer & Designer",
+    role: "Web Designer",
     features: [
-      "Modern responsive design",
-      "Dark/Light mode toggle",
-      "Smooth scroll animations",
-      "Interactive chat widget",
-      "Loading screen animation",
-      "Typing effect animation",
+      "Car catalog with specifications",
+      "Exclusive collection showcase",
+      "Pricing and rental options",
+      "About and profile sections",
+      "Clean teal and white design",
     ],
-    icon: "web",
+    image: "/project footage/Car rental project school 2/Rent Car Project v1.png",
+  },
+  {
+    id: 5,
+    slug: "sports-car-rental-v2",
+    title: "Sports Car Rental v2",
+    category: "Web Design",
+    description: "Modern dark-themed car rental website.",
+    fullDescription: "A premium car rental website with a sleek dark theme and red accents. Features sports cars available for rent in Indonesia with a modern, professional interface that appeals to luxury car enthusiasts.",
+    tags: ["Web Design", "Dark Theme", "UI", "Automotive"],
+    year: "2024",
+    client: "School Project",
+    duration: "2 Weeks",
+    role: "Web Designer",
+    features: [
+      "Premium dark theme design",
+      "Car gallery and specifications",
+      "Contact and inquiry form",
+      "Company information section",
+      "Modern sleek interface",
+    ],
+    image: "/project footage/Car rental project school 2/rent car project v2.png",
   },
 ];
-
-// Icons for each project type
-const projectIcons: Record<string, ReactNode> = {
-  dashboard: (
-    <svg className="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-    </svg>
-  ),
-  brand: (
-    <svg className="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-    </svg>
-  ),
-  mobile: (
-    <svg className="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-    </svg>
-  ),
-  web: (
-    <svg className="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-    </svg>
-  ),
-};
 
 export async function generateStaticParams() {
   return projects.map((project) => ({
@@ -180,12 +172,14 @@ export default async function ProjectPage({ params }: PageProps) {
             </p>
           </div>
 
-          {/* Project Image Placeholder with Icon */}
-          <div className={`relative aspect-video rounded-2xl bg-gradient-to-br ${project.color} mb-12 overflow-hidden`}>
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-            <div className="absolute inset-0 flex items-center justify-center text-white/30">
-              {projectIcons[project.icon]}
-            </div>
+          {/* Project Image */}
+          <div className="relative aspect-video rounded-2xl mb-12 overflow-hidden border border-neutral-800">
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover"
+            />
           </div>
 
           {/* Project Details Grid */}

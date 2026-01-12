@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
@@ -8,63 +9,52 @@ import { useTheme } from "@/context/ThemeContext";
 const projects = [
   {
     id: 1,
-    slug: "web-app-project",
-    title: "E-Commerce Dashboard",
-    category: "Web Development",
-    description: "Modern dashboard interface with analytics, inventory management, and real-time data visualization.",
-    color: "from-white/5 to-neutral-400/15",
-    tags: ["React", "Next.js", "Tailwind"],
-    icon: (
-      <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-      </svg>
-    ),
+    slug: "seeds-movie-website",
+    title: "SeEDS Movie Website",
+    category: "Web Design",
+    description: "Mood-based movie streaming website that recommends films based on how you feel. Features mood selection, watchlists, and personalized recommendations.",
+    tags: ["Web Design", "Streaming", "UI"],
+    image: "/project footage/Car rental project school 2/Seeds movie website.png",
   },
   {
     id: 2,
-    slug: "brand-identity",
-    title: "Brand Identity Design",
-    category: "Graphic Design",
-    description: "Complete brand identity package including logo, color palette, typography, and brand guidelines.",
-    color: "from-neutral-400/10 to-neutral-500/20",
-    tags: ["Branding", "Logo", "Identity"],
-    icon: (
-      <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
+    slug: "kanesia-ecommerce",
+    title: "Kanesia E-Commerce",
+    category: "UI/UX Design",
+    description: "Mobile e-commerce app for handmade fabric crafts from Makassar, Indonesia. Features product categories, recommendations, and seamless shopping experience.",
+    tags: ["Figma", "E-Commerce", "Mobile"],
+    image: "/project footage/Car rental project school 2/Kanesia e-com.png",
   },
   {
     id: 3,
-    slug: "mobile-app-design",
-    title: "Mobile App UI/UX",
-    category: "UI/UX Design",
-    description: "User-centered mobile app design with intuitive navigation, clean interface, and seamless user experience.",
-    color: "from-neutral-500/10 to-neutral-600/20",
-    tags: ["Figma", "Prototype", "Mobile"],
-    icon: (
-      <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-      </svg>
-    ),
+    slug: "lumiere-photography",
+    title: "Lumière Photography",
+    category: "Web Design",
+    description: "Professional photography services website with gallery showcase, testimonials, and elegant dark theme design.",
+    tags: ["Web Design", "Photography", "UI"],
+    image: "/project footage/Car rental project school 2/lumiere photography.png",
   },
   {
     id: 4,
-    slug: "portfolio-website",
-    title: "Portfolio Website",
-    category: "Web Development",
-    description: "This portfolio website showcasing modern web development with animations and responsive design.",
-    color: "from-neutral-600/10 to-neutral-700/20",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
-    icon: (
-      <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-      </svg>
-    ),
+    slug: "sporty-car-rentals",
+    title: "Sporty Car Rentals",
+    category: "Web Design",
+    description: "Sports car rental website featuring luxury vehicles with clean teal and white design.",
+    tags: ["Web Design", "Automotive", "UI"],
+    image: "/project footage/Car rental project school 2/Rent Car Project v1.png",
+  },
+  {
+    id: 5,
+    slug: "sports-car-rental-v2",
+    title: "Sports Car Rental v2",
+    category: "Web Design",
+    description: "Modern dark-themed car rental website for sports cars in Indonesia with sleek interface and premium feel.",
+    tags: ["Web Design", "Dark Theme", "UI"],
+    image: "/project footage/Car rental project school 2/rent car project v2.png",
   },
 ];
 
-const categories = ["All", "Web Development", "UI/UX Design", "Graphic Design"];
+const categories = ["All", "UI/UX Design", "Web Design"];
 
 export default function Projects() {
   const { ref, isVisible } = useScrollAnimation<HTMLElement>();
@@ -143,46 +133,40 @@ export default function Projects() {
                   borderColor: theme === "dark" ? "#262626" : "#e5e5e5",
                 }}
               >
-                {/* Gradient Background */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                ></div>
+                {/* Project Image */}
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
 
-                {/* Grid Pattern */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-
-                {/* Center Icon */}
+                {/* Overlay */}
                 <div
-                  className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-                  style={{ color: theme === "dark" ? "#ffffff" : "#171717" }}
-                >
-                  {project.icon}
-                </div>
+                  className="absolute inset-0 transition-opacity duration-500"
+                  style={{
+                    background: theme === "dark"
+                      ? "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)"
+                      : "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.05) 100%)",
+                  }}
+                />
 
                 {/* Content */}
-                <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                <div className="absolute inset-0 p-6 flex flex-col justify-between">
                   {/* Top - Category */}
                   <div className="flex justify-between items-start">
-                    <span
-                      className="text-sm tracking-widest uppercase transition-colors"
-                      style={{ color: theme === "dark" ? "#737373" : "#737373" }}
-                    >
+                    <span className="text-sm tracking-widest uppercase text-white/70">
                       {project.category}
                     </span>
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transform transition-all duration-300 border ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center transform transition-all duration-300 bg-white/20 backdrop-blur-sm ${
                         hoveredProject === project.id
                           ? "rotate-0 scale-100 opacity-100"
                           : "-rotate-45 scale-75 opacity-0"
                       }`}
-                      style={{
-                        backgroundColor: theme === "dark" ? "#262626" : "#f5f5f5",
-                        borderColor: theme === "dark" ? "#404040" : "#d4d4d4",
-                      }}
                     >
                       <svg
-                        className="w-5 h-5"
-                        style={{ color: theme === "dark" ? "#ffffff" : "#171717" }}
+                        className="w-5 h-5 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -199,19 +183,15 @@ export default function Projects() {
 
                   {/* Bottom - Info */}
                   <div>
-                    <h3
-                      className="text-2xl font-bold mb-2 group-hover:translate-x-2 transition-transform duration-300"
-                      style={{ color: theme === "dark" ? "#ffffff" : "#171717" }}
-                    >
+                    <h3 className="text-2xl font-bold mb-2 text-white group-hover:translate-x-2 transition-transform duration-300">
                       {project.title}
                     </h3>
                     <p
-                      className={`mb-4 transition-all duration-300 ${
+                      className={`mb-4 text-white/80 transition-all duration-300 ${
                         hoveredProject === project.id
                           ? "opacity-100 translate-y-0"
                           : "opacity-0 translate-y-4"
                       }`}
-                      style={{ color: theme === "dark" ? "#a3a3a3" : "#525252" }}
                     >
                       {project.description}
                     </p>
@@ -221,15 +201,11 @@ export default function Projects() {
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className={`px-3 py-1 rounded-full text-xs transition-all duration-300 ${
+                          className={`px-3 py-1 rounded-full text-xs bg-white/20 backdrop-blur-sm text-white transition-all duration-300 ${
                             hoveredProject === project.id
                               ? "opacity-100 translate-y-0"
                               : "opacity-0 translate-y-2"
                           }`}
-                          style={{
-                            backgroundColor: theme === "dark" ? "rgba(38, 38, 38, 0.8)" : "rgba(229, 229, 229, 0.8)",
-                            color: theme === "dark" ? "#a3a3a3" : "#525252",
-                          }}
                         >
                           {tag}
                         </span>

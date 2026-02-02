@@ -412,6 +412,7 @@ interface ChatRequest {
   message: string;
   history?: HistoryMessage[];
   image?: string; // base64 image data for vision
+  systemPrompt?: string; // Custom system prompt for different AI personalities
   // Image generation options
   imageOptions?: {
     aspectRatio?: "1:1" | "16:9" | "9:16" | "4:3" | "3:4";
@@ -469,7 +470,7 @@ function extractImagePrompt(message: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, history, image, imageOptions }: ChatRequest = await request.json();
+    const { message, history, image, imageOptions, systemPrompt: customSystemPrompt }: ChatRequest = await request.json();
 
     if ((!message || typeof message !== "string") && !image) {
       return jsonResponse(
@@ -577,7 +578,9 @@ export async function POST(request: NextRequest) {
     const realtimeInfo = getRealtimeInfo();
 
     // Build contents array for the API
-    const systemContent = { role: "user" as const, parts: [{ text: SYSTEM_PROMPT + realtimeInfo }] };
+    // Use custom system prompt from mobile app if provided, otherwise use default SYSTEM_PROMPT
+    const activeSystemPrompt = customSystemPrompt || SYSTEM_PROMPT;
+    const systemContent = { role: "user" as const, parts: [{ text: activeSystemPrompt + realtimeInfo }] };
 
     // Build history contents
     const historyContents = history?.map((msg) => ({

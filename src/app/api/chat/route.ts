@@ -5,6 +5,26 @@ import { generateImage, generateImageFromImage, generateAnimation, ImageGenerati
 // Increase timeout for image generation (60 seconds)
 export const maxDuration = 60;
 
+// CORS headers for cross-origin requests (mobile app)
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// Handle OPTIONS preflight request
+export async function OPTIONS() {
+  return jsonResponse({}, { headers: corsHeaders });
+}
+
+// Helper to add CORS headers to response
+function jsonResponse(data: object, options?: { status?: number }) {
+  return jsonResponse(data, {
+    status: options?.status || 200,
+    headers: corsHeaders,
+  });
+}
+
 // Helper function for retry with exponential backoff
 async function withRetry<T>(
   fn: () => Promise<T>,
@@ -452,7 +472,7 @@ export async function POST(request: NextRequest) {
     const { message, history, image, imageOptions }: ChatRequest = await request.json();
 
     if ((!message || typeof message !== "string") && !image) {
-      return NextResponse.json(
+      return jsonResponse(
         { error: "Message or image is required" },
         { status: 400 }
       );
@@ -493,7 +513,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (generatedImage) {
-          return NextResponse.json({
+          return jsonResponse({
             success: true,
             response: responseMessage,
             image: generatedImage,
@@ -501,7 +521,7 @@ export async function POST(request: NextRequest) {
             isAnimation: imageOptions?.isAnimation || false,
           });
         } else {
-          return NextResponse.json({
+          return jsonResponse({
             success: true,
             response: "Sorry, I couldn't generate that image. Please try with a different description!",
           });
@@ -513,7 +533,7 @@ export async function POST(request: NextRequest) {
 
         // Check for rate limit / quota errors
         if (errorStr.includes("limit") || errorStr.includes("quota") || errorStr.includes("429")) {
-          return NextResponse.json({
+          return jsonResponse({
             success: true,
             response: "Sorry, I can't generate images right now - the free image generation quota has been exceeded. 😅 Please try again in about 1 hour. But I can still chat with you in the meantime!",
           });
@@ -521,13 +541,13 @@ export async function POST(request: NextRequest) {
 
         // Check for timeout errors
         if (errorStr.includes("timeout") || errorStr.includes("timed out")) {
-          return NextResponse.json({
+          return jsonResponse({
             success: true,
             response: "The image is taking too long to generate. 🕐 The server might be busy. Please try again with a simpler description!",
           });
         }
 
-        return NextResponse.json({
+        return jsonResponse({
           success: true,
           response: `Sorry, I couldn't generate that image. ${errorMessage}`,
         });
@@ -536,7 +556,7 @@ export async function POST(request: NextRequest) {
 
     // Regular chat - use Gemini API
     if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json(
+      return jsonResponse(
         { error: "API key not configured" },
         { status: 500 }
       );
@@ -618,7 +638,7 @@ export async function POST(request: NextRequest) {
       let imagePrompt = args.prompt || "";
 
       if (!imagePrompt) {
-        return NextResponse.json({
+        return jsonResponse({
           success: true,
           response: "I'd love to generate an image for you, but I need more details about what you'd like me to create. Can you describe the image you want?",
         });
@@ -662,7 +682,7 @@ export async function POST(request: NextRequest) {
             responseMsg += ` 🎨 ${metadata.join(" | ")}`;
           }
 
-          return NextResponse.json({
+          return jsonResponse({
             success: true,
             response: responseMsg,
             image: generatedImage,
@@ -676,7 +696,7 @@ export async function POST(request: NextRequest) {
             },
           });
         } else {
-          return NextResponse.json({
+          return jsonResponse({
             success: true,
             response: "I tried to generate the image, but something went wrong. Could you try describing it differently?",
           });
@@ -690,7 +710,7 @@ export async function POST(request: NextRequest) {
     // Regular text response
     const responseText = response.text || "I apologize, I couldn't generate a response. Please try again.";
 
-    return NextResponse.json({ success: true, response: responseText });
+    return jsonResponse({ success: true, response: responseText });
   } catch (error: unknown) {
     console.error("Gemini API Error:", error);
 
@@ -724,7 +744,7 @@ export async function POST(request: NextRequest) {
         retryMessage = "Please try again in a few minutes.";
       }
 
-      return NextResponse.json(
+      return jsonResponse(
         {
           error: "rate_limit",
           response: `I'm taking a short break! The API has reached its limit. ${retryMessage} Thanks for your patience!`,
@@ -735,7 +755,7 @@ export async function POST(request: NextRequest) {
 
     // Invalid API key
     if (fullError.includes("api_key") || fullError.includes("invalid") || fullError.includes("expired")) {
-      return NextResponse.json(
+      return jsonResponse(
         {
           error: "invalid_key",
           response: "Oops! There's an issue with the API configuration. Please contact Izzat to fix this.",
@@ -746,7 +766,7 @@ export async function POST(request: NextRequest) {
 
     // Model overloaded (503)
     if (fullError.includes("503") || fullError.includes("overloaded") || fullError.includes("unavailable")) {
-      return NextResponse.json(
+      return jsonResponse(
         {
           error: "overloaded",
           response: "The AI is a bit busy right now! 🤖💤 Please wait a few seconds and try again.",
@@ -759,7 +779,7 @@ export async function POST(request: NextRequest) {
     const actualError = error instanceof Error ? error.message : "Unknown error";
     console.log("Full error details:", error);
 
-    return NextResponse.json(
+    return jsonResponse(
       {
         error: "server_error",
         response: `Oops! Something went wrong: ${actualError}. Please try again! 🔧`,
@@ -780,28 +800,28 @@ function handleImageError(imageError: unknown) {
   console.log("Image error string:", errorStr);
 
   if (errorStr.includes("429") || errorStr.includes("quota") || errorStr.includes("exhausted") || errorStr.includes("resource_exhausted") || errorStr.includes("limit")) {
-    return NextResponse.json({
+    return jsonResponse({
       success: true,
       response: "Sorry, I can't generate images right now - the free image generation quota has been exceeded. 😅 Please try again in about 1 hour. But I can still chat with you in the meantime!",
     });
   }
 
   if (errorStr.includes("abort") || errorStr.includes("timeout")) {
-    return NextResponse.json({
+    return jsonResponse({
       success: true,
       response: "The image is taking too long to generate. 🕐 The server might be busy. Please try again with a simpler description!",
     });
   }
 
   if (errorStr.includes("network") || errorStr.includes("fetch") || errorStr.includes("econnrefused")) {
-    return NextResponse.json({
+    return jsonResponse({
       success: true,
       response: "I couldn't connect to the image generation service. 🌐 Please check your internet connection and try again!",
     });
   }
 
   const errorMessage = imageError instanceof Error ? imageError.message : 'Unknown error';
-  return NextResponse.json({
+  return jsonResponse({
     success: true,
     response: `Sorry, I couldn't generate that image. ${errorMessage}`,
   });

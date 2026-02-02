@@ -19,7 +19,7 @@ export async function OPTIONS() {
 
 // Helper to add CORS headers to response
 function jsonResponse(data: object, options?: { status?: number }) {
-  return jsonResponse(data, {
+  return NextResponse.json(data, {
     status: options?.status || 200,
     headers: corsHeaders,
   });

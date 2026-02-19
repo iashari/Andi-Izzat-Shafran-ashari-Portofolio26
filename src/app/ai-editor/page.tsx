@@ -90,16 +90,24 @@ export default function EditorPage() {
   const emailInputRef = useRef<HTMLInputElement>(null)
   const [showExportMenu, setShowExportMenu] = useState(false)
   const [showFileNav, setShowFileNav] = useState(false)
+  const [editingName, setEditingName] = useState(false)
+  const [displayName, setDisplayName] = useState('')
+  const [editNameValue, setEditNameValue] = useState('')
   const exportMenuRef = useRef<HTMLDivElement>(null)
   const fileNavRef = useRef<HTMLDivElement>(null)
+  const nameInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     getSupabaseClient().auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
+      const u = session?.user ?? null
+      setUser(u)
+      setDisplayName(u?.user_metadata?.full_name || u?.email?.split('@')[0] || '')
       setAuthLoading(false)
     })
     const { data: { subscription } } = getSupabaseClient().auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+      const u = session?.user ?? null
+      setUser(u)
+      setDisplayName(u?.user_metadata?.full_name || u?.email?.split('@')[0] || '')
       setAuthLoading(false)
     })
     return () => subscription.unsubscribe()
@@ -130,6 +138,18 @@ export default function EditorPage() {
       setCurrentDocId(data[0].id)
       setDocTitle(data[0].title)
       pushHistory(data[0].content)
+    } else {
+      // Auto-create first document for new users
+      const { data: { user: currentUser } } = await getSupabaseClient().auth.getUser()
+      if (currentUser) {
+        const { data: newDoc } = await getSupabaseClient().from('documents').insert({ user_id: currentUser.id, title: 'Untitled Document', content: '' }).select().single()
+        if (newDoc) {
+          setDocuments([newDoc])
+          setCurrentDocId(newDoc.id)
+          setDocTitle(newDoc.title)
+          pushHistory(newDoc.content)
+        }
+      }
     }
   }
 
@@ -170,11 +190,14 @@ export default function EditorPage() {
     setTimeout(() => setSaveStatus('saved'), 2500)
   }, [pushHistory])
 
-  const handleAIUpdate = useCallback((newContent: string) => {
+  const handleAIUpdate = useCallback(async (newContent: string) => {
     pushHistory(newContent)
-    setSaveStatus('unsaved')
-    setTimeout(() => setSaveStatus('saved'), 2500)
-  }, [pushHistory])
+    if (currentDocId) {
+      setSaveStatus('saving')
+      await getSupabaseClient().from('documents').update({ content: newContent, updated_at: new Date().toISOString() }).eq('id', currentDocId)
+      setSaveStatus('saved')
+    }
+  }, [pushHistory, currentDocId])
 
   const handleSave = useCallback(async () => {
     if (!currentDocId) return
@@ -183,7 +206,7 @@ export default function EditorPage() {
     setSaveStatus('saved')
   }, [currentDocId, documentContent, docTitle])
 
-  function exportAs(format: 'txt' | 'md' | 'html' | 'pdf') {
+  function exportAs(format: 'txt' | 'md' | 'html' | 'doc' | 'pdf') {
     const title = docTitle || 'document'
     const content = documentContent || ''
     setShowExportMenu(false)
@@ -206,6 +229,18 @@ export default function EditorPage() {
       const html = `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>${title}</title>\n<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.7;color:#1a1a1a}h1,h2,h3{margin-top:1.5em}p{margin:0.5em 0}</style>\n</head>\n<body>\n${htmlBody}\n</body>\n</html>`
       const blob = new Blob([html], { type: 'text/html' })
       downloadBlob(blob, `${title}.html`)
+    } else if (format === 'doc') {
+      const lines = content.split('\n')
+      const htmlBody = lines.map((line) => {
+        if (!line.trim()) return '<br/>'
+        if (line.startsWith('# ')) return `<h1>${line.slice(2)}</h1>`
+        if (line.startsWith('## ')) return `<h2>${line.slice(3)}</h2>`
+        if (line.startsWith('### ')) return `<h3>${line.slice(4)}</h3>`
+        return `<p>${line}</p>`
+      }).join('\n')
+      const doc = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><title>${title}</title><style>body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.6;color:#1a1a1a;margin:2cm}h1{font-size:20pt;font-weight:700;margin:16px 0 8px}h2{font-size:16pt;font-weight:600;margin:14px 0 6px}h3{font-size:13pt;font-weight:600;margin:12px 0 4px}p{margin:4px 0}</style></head><body>${htmlBody}</body></html>`
+      const blob = new Blob(['\ufeff' + doc], { type: 'application/msword' })
+      downloadBlob(blob, `${title}.doc`)
     } else if (format === 'pdf') {
       const lines = content.split('\n')
       const htmlBody = lines.map((line) => {
@@ -297,6 +332,25 @@ export default function EditorPage() {
     setDocuments([])
     setCurrentDocId(null)
     pushHistory('')
+  }
+
+  function startEditingName() {
+    setEditNameValue(displayName)
+    setEditingName(true)
+    setTimeout(() => nameInputRef.current?.select(), 0)
+  }
+
+  async function saveDisplayName() {
+    const trimmed = editNameValue.trim()
+    if (!trimmed || trimmed === displayName) {
+      setEditingName(false)
+      return
+    }
+    const { error } = await getSupabaseClient().auth.updateUser({ data: { full_name: trimmed } })
+    if (!error) {
+      setDisplayName(trimmed)
+    }
+    setEditingName(false)
   }
 
   function switchAuthMode(mode: 'login' | 'signup') {
@@ -667,6 +721,14 @@ export default function EditorPage() {
             <input
               value={docTitle}
               onChange={(e) => setDocTitle(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.currentTarget.blur() } }}
+              onBlur={async () => {
+                if (!currentDocId) return
+                setSaveStatus('saving')
+                await getSupabaseClient().from('documents').update({ title: docTitle, updated_at: new Date().toISOString() }).eq('id', currentDocId)
+                setDocuments((prev) => prev.map((d) => d.id === currentDocId ? { ...d, title: docTitle } : d))
+                setSaveStatus('saved')
+              }}
               className={`text-sm font-semibold bg-transparent border-none focus:outline-none focus:ring-1 rounded-lg px-2 py-1 tracking-tight ${isDark ? 'text-neutral-100 focus:ring-neutral-600' : 'text-[#2d2a26] focus:ring-[#e8e4dc]'}`}
               style={{ minWidth: '120px' }}
             />
@@ -700,6 +762,7 @@ export default function EditorPage() {
                     { format: 'txt' as const, label: 'Plain Text', ext: '.txt' },
                     { format: 'md' as const, label: 'Markdown', ext: '.md' },
                     { format: 'html' as const, label: 'HTML', ext: '.html' },
+                    { format: 'doc' as const, label: 'Word Document', ext: '.doc' },
                     { format: 'pdf' as const, label: 'PDF', ext: '.pdf' },
                   ]).map((opt) => (
                     <button
@@ -776,7 +839,22 @@ export default function EditorPage() {
               </div>
             </button>
             <div className={`w-px h-5 ${isDark ? 'bg-neutral-800' : 'bg-[#e8e4dc]'}`} />
-            <span className={`text-xs tracking-wide ${isDark ? 'text-neutral-500' : 'text-[#9c958a]'}`}>{user.email?.split('@')[0]}</span>
+            {editingName ? (
+              <input
+                ref={nameInputRef}
+                value={editNameValue}
+                onChange={(e) => setEditNameValue(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') saveDisplayName(); if (e.key === 'Escape') setEditingName(false) }}
+                onBlur={saveDisplayName}
+                className={`text-xs tracking-wide w-24 px-1.5 py-0.5 rounded-md border outline-none ${isDark ? 'bg-neutral-800 text-white border-neutral-600 focus:border-neutral-400' : 'bg-white text-[#2d2a26] border-[#d5d0c8] focus:border-[#9c958a]'}`}
+                maxLength={30}
+                autoFocus
+              />
+            ) : (
+              <button onClick={startEditingName} className={`text-xs tracking-wide hover:underline cursor-pointer ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-[#9c958a] hover:text-[#5c574e]'}`} title="Click to edit name">
+                {displayName || user.email?.split('@')[0]}
+              </button>
+            )}
             <button onClick={handleSignOut} className={`text-xs tracking-wide px-3 py-1.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 ${isDark ? 'text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800' : 'text-[#9c958a] hover:text-[#5c574e] hover:bg-[#f5f2ed]'}`}>Sign Out</button>
           </div>
         </div>

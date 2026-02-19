@@ -14,7 +14,10 @@ const corsHeaders = {
 
 // Handle OPTIONS preflight request
 export async function OPTIONS() {
-  return jsonResponse({}, { headers: corsHeaders });
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }
 
 // Helper to add CORS headers to response
@@ -403,9 +406,14 @@ const generateImageTool = {
   ],
 };
 
+// Support both mobile app format and web format
 interface HistoryMessage {
-  text: string;
-  sender: "user" | "bot";
+  // Web format
+  text?: string;
+  sender?: "user" | "bot";
+  // Mobile app format (pre-formatted for Gemini)
+  role?: "user" | "model";
+  parts?: { text: string }[];
 }
 
 interface ChatRequest {
@@ -565,12 +573,17 @@ export async function POST(request: NextRequest) {
 
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-    // Build conversation context from history
+    // Build conversation context from history (for logging purposes)
     let conversationContext = "";
     if (history && Array.isArray(history)) {
       const recentHistory = history.slice(-10) as HistoryMessage[];
       conversationContext = recentHistory
-        .map((msg) => `${msg.sender === "user" ? "User" : "Izzat Bot"}: ${msg.text}`)
+        .map((msg) => {
+          // Handle both formats
+          const role = msg.role || (msg.sender === "user" ? "user" : "model");
+          const text = msg.text || (msg.parts && msg.parts[0]?.text) || "";
+          return `${role === "user" ? "User" : "Bot"}: ${text}`;
+        })
         .join("\n");
     }
 
@@ -578,15 +591,44 @@ export async function POST(request: NextRequest) {
     const realtimeInfo = getRealtimeInfo();
 
     // Build contents array for the API
-    // Use custom system prompt from mobile app if provided, otherwise use default SYSTEM_PROMPT
-    const activeSystemPrompt = customSystemPrompt || SYSTEM_PROMPT;
-    const systemContent = { role: "user" as const, parts: [{ text: activeSystemPrompt + realtimeInfo }] };
+    // Use custom system prompt from mobile app if provided
+    // If no custom prompt provided, use default SYSTEM_PROMPT (for portfolio website)
+    // Check if this is from mobile app (has custom prompt) or portfolio website (no custom prompt)
+    const isMobileApp = customSystemPrompt && customSystemPrompt.trim().length > 0;
+    const activeSystemPrompt = isMobileApp ? customSystemPrompt : SYSTEM_PROMPT;
 
-    // Build history contents
-    const historyContents = history?.map((msg) => ({
-      role: msg.sender === "user" ? "user" as const : "model" as const,
-      parts: [{ text: msg.text }],
-    })) || [];
+    // Debug logging
+    console.log("=== SYSTEM PROMPT DEBUG ===");
+    console.log("customSystemPrompt received:", customSystemPrompt ? `YES (${customSystemPrompt.substring(0, 100)}...)` : "NO");
+    console.log("isMobileApp:", isMobileApp);
+    console.log("Using prompt:", isMobileApp ? "CUSTOM (Mobile App)" : "DEFAULT (Izzat Bot)");
+    console.log("===========================");
+
+    const systemContent = { role: "user" as const, parts: [{ text: activeSystemPrompt + (isMobileApp ? "" : realtimeInfo) }] };
+
+    // Build history contents - support both mobile app format and web format
+    const historyContents = history?.map((msg) => {
+      // Mobile app format: already has role and parts
+      if (msg.role && msg.parts) {
+        // Filter out empty text parts to avoid Gemini API error
+        const validParts = msg.parts.filter(part => part.text && part.text.trim() !== '');
+        if (validParts.length === 0) {
+          return null; // Skip messages with no valid text
+        }
+        return {
+          role: msg.role as "user" | "model",
+          parts: validParts,
+        };
+      }
+      // Web format: has text and sender
+      if (msg.text && msg.text.trim() !== '') {
+        return {
+          role: msg.sender === "user" ? "user" as const : "model" as const,
+          parts: [{ text: msg.text }],
+        };
+      }
+      return null; // Skip invalid messages
+    }).filter((msg): msg is NonNullable<typeof msg> => msg !== null) || [];
 
     // Build current message content
     let currentMessageParts: { text?: string; inlineData?: { mimeType: string; data: string } }[] = [];

@@ -89,9 +89,9 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Cache Next.js static assets
+      // Cache Next.js static assets (only font/css/media, NOT JS chunks - Turbopack needs fresh JS)
       {
-        source: "/_next/static/(.*)",
+        source: "/_next/static/media/(.*)",
         headers: [
           {
             key: "Cache-Control",
